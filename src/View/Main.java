@@ -1,6 +1,6 @@
 package View;
 
-import Model.MyModel;
+import Model.*;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
