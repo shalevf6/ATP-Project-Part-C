@@ -23,6 +23,25 @@ public class MyViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        if (o == model) {
+            characterPositionRowIndex = model.getCharacterPositionRow();
+            characterPositionRow.set(characterPositionRowIndex + "");
+            getCharacterPositionColumnIndex = model.getCharacterPositionColumn();
+            characterPositionColumn.set(getCharacterPositionColumnIndex + "");
+            setChanged();
+            notifyObservers();
+        }
+    }
 
+    public int[][] getMaze() {
+        return model.getMaze();
+    }
+
+    public int getCharacterPositionRow() {
+        return characterPositionRowIndex;
+    }
+
+    public int getCharacterPositionColumn() {
+        return getCharacterPositionColumnIndex;
     }
 }
