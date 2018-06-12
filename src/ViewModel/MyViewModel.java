@@ -3,6 +3,7 @@ package ViewModel;
 import Model.IModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.input.KeyCode;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -47,5 +48,9 @@ public class MyViewModel extends Observable implements Observer {
 
     public int getCharacterPositionColumn() {
         return getCharacterPositionColumnIndex;
+    }
+
+    public void moveCharacter(KeyCode movement) {
+        model.moveCharacter(movement);
     }
 }

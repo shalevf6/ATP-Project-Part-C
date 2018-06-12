@@ -34,8 +34,6 @@ public class MyModel extends Observable implements IModel {
         //Generate maze
         threadPool.execute(() -> {
             generateRandomMaze(width,height);
-            characterPositionRow = maze.getStartPosition().getRowIndex();
-            characterPositionColumn = maze.getStartPosition().getColumnIndex();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -49,7 +47,8 @@ public class MyModel extends Observable implements IModel {
     private void generateRandomMaze(int width, int height) {
         MyMazeGenerator mg = new MyMazeGenerator();
         maze = mg.generate(width,height);
-
+        characterPositionRow = maze.getStartPosition().getRowIndex();
+        characterPositionColumn = maze.getStartPosition().getColumnIndex();
     }
 
     @Override
