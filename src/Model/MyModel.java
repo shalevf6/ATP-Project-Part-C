@@ -2,6 +2,7 @@ package Model;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.Position;
 import javafx.scene.input.KeyCode;
 
 import java.util.Observable;
@@ -11,8 +12,8 @@ import java.util.concurrent.Executors;
 public class MyModel extends Observable implements IModel {
 
     private ExecutorService threadPool = Executors.newCachedThreadPool();
-    private int characterPositionRow = 0;
-    private int characterPositionColumn = 0;
+    private int characterPositionRow;
+    private int characterPositionColumn;
 
     private Maze maze;
 
@@ -33,6 +34,8 @@ public class MyModel extends Observable implements IModel {
         //Generate maze
         threadPool.execute(() -> {
             generateRandomMaze(width,height);
+            characterPositionRow = maze.getStartPosition().getRowIndex();
+            characterPositionColumn = maze.getStartPosition().getColumnIndex();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -51,27 +54,72 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void moveCharacter(KeyCode movement) {
-        switch (movement) {
-            case UP:
-                characterPositionRow--;
-                break;
-            case DOWN:
-                characterPositionRow++;
-                break;
-            case RIGHT:
-                characterPositionColumn++;
-                break;
-            case LEFT:
-                characterPositionColumn--;
-                break;
-        }
+        if (maze != null)
+            switch (movement) {
+                case DIGIT8:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
+                        characterPositionRow--;
+                    break;
+                case DIGIT2:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)))
+                        characterPositionRow++;
+                    break;
+                case DIGIT6:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))
+                        characterPositionColumn++;
+                    break;
+                case DIGIT4:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
+                        characterPositionColumn--;
+                    break;
+                case DIGIT7:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
+                        characterPositionRow--;
+                        characterPositionColumn--;
+                    }
+                    break;
+                case DIGIT9:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
+                        characterPositionRow--;
+                        characterPositionColumn++;
+                    }
+                    break;
+                case DIGIT3:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
+                        characterPositionRow++;
+                        characterPositionColumn++;
+                    }
+                    break;
+                case DIGIT1:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
+                        characterPositionRow++;
+                        characterPositionColumn--;
+                    }
+                    break;
+            }
         setChanged();
         notifyObservers();
     }
 
     @Override
-    public Maze getMaze() {
-        return maze;
+    public int[][] getMaze() {
+        return maze.getMaze();
     }
 
     @Override

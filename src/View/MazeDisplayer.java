@@ -20,14 +20,14 @@ import java.util.ResourceBundle;
 
 public class MazeDisplayer extends Canvas {
 
-    private Maze maze;
+    private int[][] maze;
     private int characterPositionRow = 0;
     private int characterPositionColumn = 0;
     //region Properties
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();
 
-    public void setMaze(Maze maze) {
+    public void setMaze(int[][] maze) {
         this.maze = maze;
         redraw();
 
@@ -47,7 +47,6 @@ public class MazeDisplayer extends Canvas {
     }
 
     private void redraw() {
-        /*
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
@@ -72,14 +71,13 @@ public class MazeDisplayer extends Canvas {
                 }
 
                 //Draw Character
-                //gc.setFill(Color.RED);
-                //gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
-                //gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
+                gc.setFill(Color.RED);
+                gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
+                gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
             } catch (FileNotFoundException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
-        */
     }
 
     public String getImageFileNameWall() {
