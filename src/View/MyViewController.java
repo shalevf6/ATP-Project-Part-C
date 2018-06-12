@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -45,7 +46,6 @@ public class MyViewController implements Observer, IView {
             displayMaze(viewModel.getMaze());
             btn_generateMaze.setDisable(true);
         }
-
     }
 
     @Override
@@ -73,6 +73,11 @@ public class MyViewController implements Observer, IView {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(alertMessage);
         alert.show();
+    }
+
+    public void KeyPressed(KeyEvent keyEvent) {
+        viewModel.moveCharacter(keyEvent.getCode());
+        keyEvent.consume();
     }
 
     public void setResizeEvent(Scene scene) {
