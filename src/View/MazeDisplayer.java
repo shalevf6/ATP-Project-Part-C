@@ -30,7 +30,6 @@ public class MazeDisplayer extends Canvas {
     public void setMaze(int[][] maze) {
         this.maze = maze;
         redraw();
-
     }
 
     public void setCharacterPosition(int row, int column) {

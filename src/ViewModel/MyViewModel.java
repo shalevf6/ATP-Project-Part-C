@@ -13,10 +13,10 @@ public class MyViewModel extends Observable implements Observer {
     private IModel model;
 
     private int characterPositionRowIndex;
-    private int getCharacterPositionColumnIndex;
+    private int CharacterPositionColumnIndex;
 
-    public StringProperty characterPositionRow = new SimpleStringProperty("1");
-    public StringProperty characterPositionColumn = new SimpleStringProperty("1");
+    public StringProperty characterPositionRow = new SimpleStringProperty();
+    public StringProperty characterPositionColumn = new SimpleStringProperty();
 
     public MyViewModel(IModel model) {
         this.model = model;
@@ -27,8 +27,8 @@ public class MyViewModel extends Observable implements Observer {
         if (o == model) {
             characterPositionRowIndex = model.getCharacterPositionRow();
             characterPositionRow.set(characterPositionRowIndex + "");
-            getCharacterPositionColumnIndex = model.getCharacterPositionColumn();
-            characterPositionColumn.set(getCharacterPositionColumnIndex + "");
+            CharacterPositionColumnIndex = model.getCharacterPositionColumn();
+            characterPositionColumn.set(CharacterPositionColumnIndex + "");
             setChanged();
             notifyObservers();
         }
@@ -47,7 +47,7 @@ public class MyViewModel extends Observable implements Observer {
     }
 
     public int getCharacterPositionColumn() {
-        return getCharacterPositionColumnIndex;
+        return CharacterPositionColumnIndex;
     }
 
     public void moveCharacter(KeyCode movement) {

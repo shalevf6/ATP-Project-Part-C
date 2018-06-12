@@ -53,7 +53,7 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void moveCharacter(KeyCode movement) {
-        if (maze != null)
+        if (maze != null) {
             switch (movement) {
                 case DIGIT8:
                     if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
@@ -112,6 +112,7 @@ public class MyModel extends Observable implements IModel {
                     }
                     break;
             }
+        }
         setChanged();
         notifyObservers();
     }
