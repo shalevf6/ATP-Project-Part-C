@@ -1,7 +1,6 @@
 package ViewModel;
 
 import Model.IModel;
-import Model.MyModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

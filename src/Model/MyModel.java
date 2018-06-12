@@ -13,6 +13,7 @@ public class MyModel extends Observable implements IModel {
     private ExecutorService threadPool = Executors.newCachedThreadPool();
     private int characterPositionRow = 0;
     private int characterPositionColumn = 0;
+
     private Maze maze;
 
     public MyModel() {
