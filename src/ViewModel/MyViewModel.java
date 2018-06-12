@@ -33,6 +33,10 @@ public class MyViewModel extends Observable implements Observer {
         }
     }
 
+    public void generateMaze(int width, int height){
+        model.generateMaze(width, height);
+    }
+
     public int[][] getMaze() {
         return model.getMaze();
     }

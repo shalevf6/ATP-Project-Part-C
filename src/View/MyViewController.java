@@ -20,6 +20,11 @@ public class MyViewController implements Observer, IView {
 
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
+    public javafx.scene.control.TextField txtfld_rowsNum;
+    public javafx.scene.control.TextField txtfld_columnsNum;
+    public javafx.scene.control.Label lbl_rowsNum;
+    public javafx.scene.control.Label lbl_columnsNum;
+    public javafx.scene.control.Button btn_generateMaze;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -30,12 +35,15 @@ public class MyViewController implements Observer, IView {
     }
 
     private void bindProperties(MyViewModel viewModel) {
+        lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
+        lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (o == viewModel){
             displayMaze(viewModel.getMaze());
+            btn_generateMaze.setDisable(true);
         }
 
     }
@@ -51,12 +59,10 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
-        /*
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
         btn_generateMaze.setDisable(true);
-        viewModel.generateMaze(width, heigth);
-        */
+        viewModel.generateMaze(width, height);
     }
 
     public void solveMaze(ActionEvent actionEvent) {
