@@ -3,9 +3,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
     <children>
-        <Label text="Bla Bla Bla..." />
+        <Label layoutX="7.0" text="This game created by the three magnificent individuals that tried to find out purpose of " />
+        <Label layoutX="7.0" layoutY="17.0" text="life and found it by solving this game at the best time they could find!" />
+        <Label layoutX="7.0" layoutY="34.0" text="now is you'r  time to shine and solve it as well, Good luck!" />
     </children>
 </AnchorPane>
