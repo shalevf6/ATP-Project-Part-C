@@ -55,6 +55,7 @@ public class MazeDisplayer extends Canvas {
 
             try {
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
+
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
 
                 GraphicsContext gc = getGraphicsContext2D();
