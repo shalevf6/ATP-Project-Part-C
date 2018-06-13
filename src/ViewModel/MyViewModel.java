@@ -57,4 +57,9 @@ public class MyViewModel extends Observable implements Observer {
     public void moveCharacter(KeyCode movement) {
         model.moveCharacter(movement);
     }
+
+    public boolean didFinished ()
+    {
+        return model.getIfFinish();
+    }
 }

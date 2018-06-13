@@ -1,6 +1,7 @@
 package View;
 
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.Maze;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -10,14 +11,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class MyViewController implements Observer, IView {
+public class    MyViewController implements Observer, IView {
 
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
@@ -119,6 +123,43 @@ public class MyViewController implements Observer, IView {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void reSizeEvent (Scene sc)
+    {
+        sc.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                mazeDisplayer.redraw();
+            }
+        });
+        sc.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                mazeDisplayer.redraw();
+            }
+        });
+    }
+
+    public void mouseDragging (MouseEvent me)
+    {
+        System.out.println("mouse move");
+        if (mazeDisplayer != null)
+        {
+            int xMouse = (int) ((me.getX()) / (mazeDisplayer.getHeight()) / (viewModel.getMaze()[0].length));
+            int yMouse = (int) ((me.getY()) / (mazeDisplayer.getWidth()) / (viewModel.getMaze().length));
+            if (!viewModel.didFinished())
+            {
+                if (yMouse < viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.NUMPAD8);
+                if (yMouse > viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.NUMPAD2);
+                if (xMouse < viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.NUMPAD4);
+                if (yMouse > viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.NUMPAD6);
+            }
         }
     }
 

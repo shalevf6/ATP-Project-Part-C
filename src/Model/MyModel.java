@@ -28,6 +28,7 @@ public class MyModel extends Observable implements IModel {
     private Server solveSearchProblemServer;
     private int characterPositionRow;
     private int characterPositionColumn;
+    private boolean didWeSolved;
 
     private Maze maze;
 
@@ -35,6 +36,7 @@ public class MyModel extends Observable implements IModel {
         // Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
+        didWeSolved = false;
     }
 
     public void startServers() {
@@ -50,6 +52,7 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void generateMaze(int width, int height) {
         //Generate maze
+        didWeSolved = false;
         threadPool.execute(() -> {
             generateRandomMaze(width,height);
             characterPositionRow = maze.getStartPosition().getRowIndex();
@@ -206,8 +209,15 @@ public class MyModel extends Observable implements IModel {
                     break;
             }
         }
+        if (getCharacterPositionRow() == maze.getGoalPosition().getRowIndex() && getCharacterPositionColumn() == maze.getGoalPosition().getColumnIndex())
+            didWeSolved = true;
         setChanged();
         notifyObservers();
+    }
+
+    public boolean getIfFinish()
+    {
+        return didWeSolved;
     }
 
     @Override
