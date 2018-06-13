@@ -60,9 +60,9 @@ public class MyViewModel extends Observable implements Observer {
         model.moveCharacter(movement);
     }
 
-    public boolean didFinished ()
-    {
+    public boolean didFinished () {
         return model.getIfFinish();
+    }
 
     public Position getGoalPosition() {
         return model.getGoalPosition();
