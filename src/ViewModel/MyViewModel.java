@@ -5,10 +5,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
 
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MyViewModel extends Observable implements Observer {
+public class        MyViewModel extends Observable implements Observer {
 
     private IModel model;
 
@@ -17,6 +18,7 @@ public class MyViewModel extends Observable implements Observer {
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
+
 
     public MyViewModel(IModel model) {
         this.model = model;
@@ -42,6 +44,13 @@ public class MyViewModel extends Observable implements Observer {
         model.solveMaze();
     }
 
+    public void load(File chosen) {
+        model.load(chosen);
+    }
+
+    public void save(String chosen) {
+        model.save(chosen);
+    }
     public int[][] getMaze() {
         return model.getMaze();
     }
