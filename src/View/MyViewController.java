@@ -54,23 +54,35 @@ public class MyViewController implements Observer, IView {
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
         mazeDisplayer.setCharacterPosition(characterPositionRow,characterPositionColumn);
-        this.characterPositionRow.set(characterPositionRow + "");
-        this.characterPositionColumn.set(characterPositionColumn + "");
+        this.characterPositionRow.set(String.valueOf(characterPositionRow));
+        this.characterPositionColumn.set(String.valueOf(characterPositionColumn));
     }
 
     public void generateMaze() {
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
-        btn_generateMaze.setDisable(true);
-        viewModel.generateMaze(width, height);
+        if (height <= 0 || width <= 0 || (height == 1 && width == 1)) {
+            showAlert("Wrong input you slimy fuck!", "Generating a 10X10 maze as default instead..");
+            viewModel.generateMaze(10,10);
+        }
+        else
+            viewModel.generateMaze(width, height);
     }
 
     public void solveMaze(ActionEvent actionEvent) {
         showAlert("Solving maze..");
+        viewModel.solveMaze();
     }
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(alertMessage);
+        alert.show();
+    }
+
+    private void showAlert(String title, String alertMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
         alert.setContentText(alertMessage);
         alert.show();
     }
@@ -81,8 +93,6 @@ public class MyViewController implements Observer, IView {
     }
 
     public void setResizeEvent(Scene scene) {
-        long width = 0;
-        long height = 0;
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {

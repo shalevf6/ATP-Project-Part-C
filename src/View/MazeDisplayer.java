@@ -54,7 +54,6 @@ public class MazeDisplayer extends Canvas {
 
             try {
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
 
                 GraphicsContext gc = getGraphicsContext2D();
@@ -64,16 +63,15 @@ public class MazeDisplayer extends Canvas {
                 for (int i = 0; i < maze.length; i++) {
                     for (int j = 0; j < maze[i].length; j++) {
                         if (maze[i][j] == 1) {
-                            //gc.fillRect(i * cellHeight, j * cellWidth, cellHeight, cellWidth);
-                            gc.drawImage(wallImage, i * cellHeight, j * cellWidth, cellHeight, cellWidth);
+                            gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                         }
                     }
                 }
 
                 //Draw Character
                 gc.setFill(Color.RED);
-                gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
-                gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
+                gc.fillOval(characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
+                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
