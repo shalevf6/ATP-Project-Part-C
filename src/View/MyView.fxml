@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import View.MazeDisplayer?>
+<?import View.PlayerDisplayer?>
+<?import View.SolutionDisplayer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,107 +14,106 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane onKeyPressed="#KeyPressed" prefHeight="456.0" prefWidth="564.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
-   <top>
-       <VBox BorderPane.alignment="CENTER">
-           <children>
-               <MenuBar>
-                   <menus>
-                       <Menu mnemonicParsing="false" text="File">
-                           <items>
-                               <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
+
+<StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+   <children>
+      <BorderPane onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
+         <top>
+             <VBox BorderPane.alignment="CENTER">
+                 <children>
+                     <MenuBar>
+                         <menus>
+                             <Menu mnemonicParsing="false" text="File">
+                                 <items>
+                              <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
                                <MenuItem mnemonicParsing="false" text="Save" onAction="#SaveGame"/>
                                <MenuItem onAction="#loadGame" mnemonicParsing="false" text="Load" />
                                <MenuItem mnemonicParsing="false" text="Exit" />
-                           </items>
-                       </Menu>
-                       <Menu mnemonicParsing="false" text="Edit">
-                           <items>
-                               <MenuItem mnemonicParsing="false" text="Delete"/>
-                           </items>
-                       </Menu>
-                       <Menu mnemonicParsing="false" text="Help">
-                           <items>
-                               <MenuItem mnemonicParsing="false" text="About" onAction="#About"/>
-                           </items>
-                       </Menu>
-                   </menus>
-               </MenuBar>
-           </children>
-       </VBox>
-   </top>
-   <center>
-      <Pane BorderPane.alignment="CENTER">
-         <children>
-             <MazeDisplayer fx:id="mazeDisplayer" height="600.0" width="600.0"
-                            imageFileNameCharacter="Resources/Images/character1.jpg"
-                            imageFileNameWall="Resources/Images/wall3.jpg" />
-
-         </children>
-          <padding>
-              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-          </padding>
-      </Pane>
-   </center>
-   <bottom>
-      <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Status bar" />
-         </children></HBox>
-   </bottom>
-   <left>
-       <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
-           <children>
-               <GridPane>
-                   <columnConstraints>
-                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                   </columnConstraints>
-                   <rowConstraints>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                   </rowConstraints>
-                   <children>
-                       <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                       <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                       <TextField fx:id="txtfld_rowsNum" disable="false" text="50" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="0"/>
-                       <TextField fx:id="txtfld_columnsNum" disable="false" text="50" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="1"/>
-                       <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze"
-                               GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
-                       <Button cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0"
-                               text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
-                       <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                       <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                       <Label fx:id="lbl_rowsNum" GridPane.columnIndex="1" GridPane.rowIndex="4" text="${controller.characterPositionRow}"/>
-                       <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                       <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="4" text="${controller.characterPositionRow}" />-->
-                       <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="5" text="${controller.characterPositionColumn}"/>-->
-                       <!--                    <ChoiceBox value="2 minutes" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                               <items>
-                                                   <FXCollections fx:factory="observableArrayList">
-                                                       <String fx:value="2 minutes" />
-                                                       <String fx:value="5 minutes" />
-                                                       <String fx:value="15 minutes" />
-                                                   </FXCollections>
-                                               </items>
-                                           </ChoiceBox>-->
-                   </children>
-               </GridPane>
-           </children>
-           <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-           </padding>
-       </VBox>
-   </left>
-</BorderPane>
+                                 </items>
+                             </Menu>
+                             <Menu mnemonicParsing="false" text="Options">
+                                 <items>
+                                     <MenuItem mnemonicParsing="false" text="Properties" />
+                                 </items>
+                             </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                          <items>
+                              <MenuItem mnemonicParsing="false" text="Game rules" />
+                            <MenuItem mnemonicParsing="false" text="About" />
+                          </items>
+                        </Menu>
+                         </menus>
+                     </MenuBar>
+                 </children>
+             </VBox>
+         </top>
+         <bottom>
+            <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Status bar" />
+               </children>
+            </HBox>
+         </bottom>
+         <left>
+             <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
+                 <children>
+                     <GridPane>
+                         <columnConstraints>
+                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.0" minWidth="10.0" prefWidth="66.0" />
+                         </columnConstraints>
+                         <rowConstraints>
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         </rowConstraints>
+                         <children>
+                             <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                             <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                             <TextField fx:id="txtfld_rowsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                             <TextField fx:id="txtfld_columnsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                             <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                             <Button fx:id="btn_solveMaze" cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                             <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                             <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                             <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                             <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                             <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="4" text="${controller.characterPositionRow}" />-->
+                             <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="5" text="${controller.characterPositionColumn}"/>-->
+                             <!--                    <ChoiceBox value="2 minutes" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                     <items>
+                                                         <FXCollections fx:factory="observableArrayList">
+                                                             <String fx:value="2 minutes" />
+                                                             <String fx:value="5 minutes" />
+                                                             <String fx:value="15 minutes" />
+                                                         </FXCollections>
+                                                     </items>
+                                                 </ChoiceBox>-->
+                         </children>
+                     </GridPane>
+                 </children>
+                 <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                 </padding>
+             </VBox>
+         </left>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                   <PlayerDisplayer fx:id="playerDisplayer" imageFileNameCharacter="Resources/Images/character1.jpg" />
+                   <SolutionDisplayer fx:id="solutionDisplayer" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
+                   <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameCharacter="Resources/Images/character1.jpg" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="600.0" />
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

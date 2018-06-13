@@ -1,6 +1,8 @@
 package ViewModel;
 
 import Model.IModel;
+import algorithms.mazeGenerators.Position;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
@@ -15,6 +17,7 @@ public class        MyViewModel extends Observable implements Observer {
 
     private int characterPositionRowIndex;
     private int CharacterPositionColumnIndex;
+    private Position goalPosition;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -26,14 +29,16 @@ public class        MyViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == model) {
-            characterPositionRowIndex = model.getCharacterPositionRow();
-            characterPositionRow.set(String.valueOf(characterPositionRowIndex));
-            CharacterPositionColumnIndex = model.getCharacterPositionColumn();
-            characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
-            setChanged();
-            notifyObservers();
-        }
+        Platform.runLater(() -> {
+            if (o == model) {
+                characterPositionRowIndex = model.getCharacterPositionRow();
+                characterPositionRow.set(String.valueOf(characterPositionRowIndex));
+                CharacterPositionColumnIndex = model.getCharacterPositionColumn();
+                characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
+                setChanged();
+                notifyObservers();
+            }
+        });
     }
 
     public void generateMaze(int width, int height){
@@ -65,5 +70,17 @@ public class        MyViewModel extends Observable implements Observer {
 
     public void moveCharacter(KeyCode movement) {
         model.moveCharacter(movement);
+    }
+
+    public boolean didFinished () {
+        return model.getIfFinish();
+    }
+
+    public Position getGoalPosition() {
+        return model.getGoalPosition();
+    }
+
+    public Position getStartPosition() {
+        return model.getStartPosition();
     }
 }

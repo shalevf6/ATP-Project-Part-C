@@ -8,7 +8,6 @@ import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
@@ -33,6 +32,8 @@ public class MyModel extends Observable implements IModel {
     private Server solveSearchProblemServer;
     private int characterPositionRow;
     private int characterPositionColumn;
+    private boolean didWeSolve;
+    private Solution solution;
 
     private Maze maze;
 
@@ -40,6 +41,7 @@ public class MyModel extends Observable implements IModel {
         // Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
+        didWeSolve = false;
     }
 
     public void startServers() {
@@ -55,6 +57,7 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void generateMaze(int width, int height) {
         //Generate maze
+        didWeSolve = false;
         threadPool.execute(() -> {
             generateRandomMaze(width,height);
             characterPositionRow = maze.getStartPosition().getRowIndex();
@@ -211,6 +214,8 @@ public class MyModel extends Observable implements IModel {
                     break;
             }
         }
+        if (getCharacterPositionRow() == maze.getGoalPosition().getRowIndex() && getCharacterPositionColumn() == maze.getGoalPosition().getColumnIndex())
+            didWeSolve = true;
         setChanged();
         notifyObservers();
     }
@@ -237,7 +242,6 @@ public class MyModel extends Observable implements IModel {
             alert.setHeaderText("WARNING!!!");// Header
             alert.setContentText("File already exists. Overwrite?"); //Discription of warning
             alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
-
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.YES){
                 fileExists=false;
@@ -258,6 +262,18 @@ public class MyModel extends Observable implements IModel {
             }
         }
     }
+
+    public void exit() {
+        stopServers();
+        threadPool.shutdown();
+    }
+
+    @Override
+    public boolean getIfFinish()
+    {
+        return didWeSolve;
+    }
+
     @Override
     public int[][] getMaze() {
         return maze.getMaze();
@@ -271,6 +287,20 @@ public class MyModel extends Observable implements IModel {
     @Override
     public int getCharacterPositionColumn() {
         return characterPositionColumn;
+    }
+
+    public Position getGoalPosition() {
+        return maze.getGoalPosition();
+    }
+
+    @Override
+    public Position getStartPosition() {
+        return maze.getStartPosition();
+    }
+
+    @Override
+    public Solution getSolution() {
+        return solution;
     }
 
 }

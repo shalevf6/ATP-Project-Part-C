@@ -1,6 +1,7 @@
 package View;
 
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.Maze;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,7 +13,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,11 +28,14 @@ public class MyViewController implements Observer, IView {
 
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
+    public SolutionDisplayer solutionDisplayer;
+    public PlayerDisplayer playerDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
+    public javafx.scene.control.Button btn_solveMaze;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -53,6 +60,8 @@ public class MyViewController implements Observer, IView {
 
     @Override
     public void displayMaze(int[][] maze) {
+        mazeDisplayer.setGoalPosition(viewModel.getGoalPosition());
+        mazeDisplayer.setStartPosition(viewModel.getStartPosition());
         mazeDisplayer.setMaze(maze);
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
@@ -64,12 +73,15 @@ public class MyViewController implements Observer, IView {
     public void generateMaze() {
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
+        btn_generateMaze.setDisable(true);
         if (height <= 0 || width <= 0 || (height == 1 && width == 1)) {
             showAlert("Wrong input you slimy fuck!", "Generating a 10X10 maze as default instead..");
             viewModel.generateMaze(10,10);
         }
         else
             viewModel.generateMaze(width, height);
+        btn_generateMaze.setDisable(false);
+        btn_solveMaze.setDisable(false);
     }
 
 
@@ -120,6 +132,32 @@ public class MyViewController implements Observer, IView {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void mouseDragging (MouseEvent me)
+    {
+        System.out.println("mouse move");
+
+        if (mazeDisplayer != null)
+        {
+            int xMousePos = (int) ((me.getX()) / (mazeDisplayer.getWidth() / (viewModel.getMaze()[0].length)));
+            int yMousePos = (int) ((me.getY()) / (mazeDisplayer.getHeight() / (viewModel.getMaze().length)));
+            System.out.println(me.getSceneX());
+            System.out.println(me.getSceneY());
+
+            if (!viewModel.didFinished())
+            {
+                if (yMousePos < viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.NUMPAD8);
+                if (yMousePos > viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.NUMPAD2);
+                if (xMousePos < viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.NUMPAD4);
+                if (xMousePos > viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.NUMPAD6);
+            }
+        }
+
     }
 
     public String getCharacterPositionRow() {
