@@ -21,10 +21,12 @@ import javafx.stage.Stage;
 import java.util.Observable;
 import java.util.Observer;
 
-public class    MyViewController implements Observer, IView {
+public class MyViewController implements Observer, IView {
 
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
+    public SolutionDisplayer solutionDisplayer;
+    public PlayerDisplayer playerDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
