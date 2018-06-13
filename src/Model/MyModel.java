@@ -2,6 +2,7 @@ package Model;
 
 import Client.IClientStrategy;
 import Client.Client;
+import IO.MyCompressorOutputStream;
 import IO.MyDecompressorInputStream;
 import Server.Server;
 import Server.ServerStrategyGenerateMaze;
@@ -10,13 +11,17 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -213,6 +218,49 @@ public class MyModel extends Observable implements IModel {
             didWeSolve = true;
         setChanged();
         notifyObservers();
+    }
+    public void load(File chosen)
+    {
+        try {
+            ObjectInputStream readFromFile = new ObjectInputStream(new FileInputStream(chosen));
+            maze = new Maze((byte[])(readFromFile.readObject()));
+            setChanged();
+            notifyObservers();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save(String name)
+    {
+
+        File savedMaze = new File("./savedMazes",name);
+        boolean fileExists = savedMaze.exists();
+        if(savedMaze.exists()){
+            Alert alert = new Alert(Alert.AlertType.WARNING,"", ButtonType.YES, ButtonType.NO);
+            alert.setTitle("Warning!");  //warning box title
+            alert.setHeaderText("WARNING!!!");// Header
+            alert.setContentText("File already exists. Overwrite?"); //Discription of warning
+            alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.YES){
+                fileExists=false;
+            } else {
+             return;
+            }
+
+        }
+
+        if(!fileExists) {
+            try {
+                ObjectOutputStream writeToFile = new ObjectOutputStream(new FileOutputStream(savedMaze));
+                writeToFile.writeObject(maze.toByteArray());
+                writeToFile.flush();
+                writeToFile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void exit() {

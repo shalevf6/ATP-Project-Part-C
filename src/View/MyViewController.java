@@ -7,10 +7,12 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 public class MyViewController implements Observer, IView {
 
@@ -81,10 +84,7 @@ public class MyViewController implements Observer, IView {
         btn_solveMaze.setDisable(false);
     }
 
-    public void solveMaze(ActionEvent actionEvent) {
-        showAlert("Solving maze..");
-        viewModel.solveMaze();
-    }
+
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -175,4 +175,59 @@ public class MyViewController implements Observer, IView {
     public StringProperty getCharacterPositionColumnProperty() {
         return characterPositionColumn;
     }
+
+    public void SetStageNewEvent(ActionEvent actionEvent) {
+
+    }
+
+    public void saveGame(ActionEvent actionEvent) {
+    if(viewModel.getMaze()==null) {
+
+        Alert alert = new Alert(Alert.AlertType.WARNING,"", ButtonType.OK);
+        alert.setTitle("Warning!");  //warning box title
+        alert.setHeaderText("WARNING!!!");// Header
+        alert.setContentText("you must generate the maze before you save it!"); //Discription of warning
+        alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return;
+        } else {
+            return;
+        }
+    }
+    else
+    {
+        viewModel.save(get_saved_game_name(actionEvent));
+    }
+    }
+
+    private String get_saved_game_name(ActionEvent actionEvent) {
+        String str="";
+        return str;
+    }
+
+
+    public void loadGame(ActionEvent actionEvent) {
+
+    }
+
+    public void solveMaze(ActionEvent actionEvent) {
+    }
+
+    public void SaveGame(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("SaveGameController");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("SaveGame.fxml").openStream());
+            Scene scene = new Scene(root, 400, 350);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
