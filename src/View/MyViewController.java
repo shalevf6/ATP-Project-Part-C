@@ -132,41 +132,30 @@ public class    MyViewController implements Observer, IView {
         }
     }
 
-    public void reSizeEvent (Scene sc)
-    {
-        sc.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                mazeDisplayer.redraw();
-            }
-        });
-        sc.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                mazeDisplayer.redraw();
-            }
-        });
-    }
-
     public void mouseDragging (MouseEvent me)
     {
         System.out.println("mouse move");
+
         if (mazeDisplayer != null)
         {
-            int xMouse = (int) ((me.getX()) / (mazeDisplayer.getHeight()) / (viewModel.getMaze()[0].length));
-            int yMouse = (int) ((me.getY()) / (mazeDisplayer.getWidth()) / (viewModel.getMaze().length));
+            int xMousePos = (int) ((me.getX()) / (mazeDisplayer.getWidth() / (viewModel.getMaze()[0].length)));
+            int yMousePos = (int) ((me.getY()) / (mazeDisplayer.getHeight() / (viewModel.getMaze().length)));
+            System.out.println(me.getSceneX());
+            System.out.println(me.getSceneY());
+
             if (!viewModel.didFinished())
             {
-                if (yMouse < viewModel.getCharacterPositionRow())
+                if (yMousePos < viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.NUMPAD8);
-                if (yMouse > viewModel.getCharacterPositionRow())
+                if (yMousePos > viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.NUMPAD2);
-                if (xMouse < viewModel.getCharacterPositionColumn())
+                if (xMousePos < viewModel.getCharacterPositionColumn())
                     viewModel.moveCharacter(KeyCode.NUMPAD4);
-                if (yMouse > viewModel.getCharacterPositionColumn())
+                if (xMousePos > viewModel.getCharacterPositionColumn())
                     viewModel.moveCharacter(KeyCode.NUMPAD6);
             }
         }
+
     }
 
     public String getCharacterPositionRow() {
