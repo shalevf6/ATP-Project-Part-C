@@ -7,7 +7,6 @@ import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
@@ -223,6 +222,15 @@ public class MyModel extends Observable implements IModel {
     @Override
     public int getCharacterPositionColumn() {
         return characterPositionColumn;
+    }
+
+    public Position getGoalPosition() {
+        return maze.getGoalPosition();
+    }
+
+    @Override
+    public Position getStartPosition() {
+        return maze.getStartPosition();
     }
 
 }
