@@ -26,6 +26,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
+    public javafx.scene.control.Button btn_solveMaze;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -50,6 +51,8 @@ public class MyViewController implements Observer, IView {
 
     @Override
     public void displayMaze(int[][] maze) {
+        mazeDisplayer.setGoalPosition(viewModel.getGoalPosition());
+        mazeDisplayer.setStartPosition(viewModel.getStartPosition());
         mazeDisplayer.setMaze(maze);
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
@@ -61,12 +64,15 @@ public class MyViewController implements Observer, IView {
     public void generateMaze() {
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
+        btn_generateMaze.setDisable(true);
         if (height <= 0 || width <= 0 || (height == 1 && width == 1)) {
             showAlert("Wrong input you slimy fuck!", "Generating a 10X10 maze as default instead..");
             viewModel.generateMaze(10,10);
         }
         else
             viewModel.generateMaze(width, height);
+        btn_generateMaze.setDisable(false);
+        btn_solveMaze.setDisable(false);
     }
 
     public void solveMaze(ActionEvent actionEvent) {
