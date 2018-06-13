@@ -2,6 +2,7 @@ package ViewModel;
 
 import Model.IModel;
 import algorithms.mazeGenerators.Position;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
@@ -26,14 +27,16 @@ public class MyViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == model) {
-            characterPositionRowIndex = model.getCharacterPositionRow();
-            characterPositionRow.set(String.valueOf(characterPositionRowIndex));
-            CharacterPositionColumnIndex = model.getCharacterPositionColumn();
-            characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
-            setChanged();
-            notifyObservers();
-        }
+        Platform.runLater(() -> {
+            if (o == model) {
+                characterPositionRowIndex = model.getCharacterPositionRow();
+                characterPositionRow.set(String.valueOf(characterPositionRowIndex));
+                CharacterPositionColumnIndex = model.getCharacterPositionColumn();
+                characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
+                setChanged();
+                notifyObservers();
+            }
+        });
     }
 
     public void generateMaze(int width, int height){

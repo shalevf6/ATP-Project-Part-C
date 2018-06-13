@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MazeDisplayer extends Canvas {
+public class MazeDisplayer extends Canvas implements Displayer {
 
     private int[][] maze;
     private int characterPositionRow = 0;
@@ -34,6 +34,7 @@ public class MazeDisplayer extends Canvas {
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();
     private StringProperty ImageFileNameGoal = new SimpleStringProperty();
     private StringProperty ImageFileNameStart = new SimpleStringProperty();
+
     public void setMaze(int[][] maze) {
         this.maze = maze;
         redraw();

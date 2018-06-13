@@ -2,6 +2,7 @@ package Model;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 
 public interface IModel {
@@ -14,4 +15,6 @@ public interface IModel {
     boolean getIfFinish();
     Position getGoalPosition();
     Position getStartPosition();
+    Solution getSolution();
+    void exit();
 }
