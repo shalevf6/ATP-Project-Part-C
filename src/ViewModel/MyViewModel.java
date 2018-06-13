@@ -1,6 +1,7 @@
 package ViewModel;
 
 import Model.IModel;
+import algorithms.mazeGenerators.Position;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
@@ -14,6 +15,7 @@ public class MyViewModel extends Observable implements Observer {
 
     private int characterPositionRowIndex;
     private int CharacterPositionColumnIndex;
+    private Position goalPosition;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -61,5 +63,12 @@ public class MyViewModel extends Observable implements Observer {
     public boolean didFinished ()
     {
         return model.getIfFinish();
+
+    public Position getGoalPosition() {
+        return model.getGoalPosition();
+    }
+
+    public Position getStartPosition() {
+        return model.getStartPosition();
     }
 }
