@@ -2,6 +2,8 @@ package View;
 
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.Solution;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -52,22 +54,43 @@ public class MyViewController implements Observer, IView {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == viewModel){
-            displayMaze(viewModel.getMaze());
-            btn_generateMaze.setDisable(true);
-        }
+        Platform.runLater(() -> {
+            String displayer = (String) arg;
+            if (o == viewModel && displayer.contains("MazeDisplayer")) {
+                displayMaze(viewModel.getMaze());
+                btn_generateMaze.setDisable(true);
+                btn_solveMaze.setDisable(false);
+            }
+            if (o == viewModel && displayer.contains("PlayerDisplayer")) {
+                displayPlayer(viewModel.getMaze());
+            }
+            if (o == viewModel && displayer.contains("SolutionDisplayer")) {
+                displaySolution(viewModel.getMaze());
+            }
+            if (o == viewModel && displayer.contains("SUCCESS")) {
+                // implement success scenario
+            }
+        });
+    }
+
+    @Override
+    public void displaySolution(int[][] maze) {
+        viewModel.solveMaze();
+        solutionDisplayer.setSolution(maze, viewModel.getSolution());
+    }
+
+    @Override
+    public void displayPlayer(int[][] maze) {
+        int characterPositionRow = viewModel.getCharacterPositionRow();
+        int characterPositionColumn = viewModel.getCharacterPositionColumn();
+        playerDisplayer.setPlayer(maze,characterPositionRow,characterPositionColumn);
+        this.characterPositionRow.set(String.valueOf(characterPositionRow));
+        this.characterPositionColumn.set(String.valueOf(characterPositionColumn));
     }
 
     @Override
     public void displayMaze(int[][] maze) {
-        mazeDisplayer.setGoalPosition(viewModel.getGoalPosition());
-        mazeDisplayer.setStartPosition(viewModel.getStartPosition());
-        mazeDisplayer.setMaze(maze);
-        int characterPositionRow = viewModel.getCharacterPositionRow();
-        int characterPositionColumn = viewModel.getCharacterPositionColumn();
-        mazeDisplayer.setCharacterPosition(characterPositionRow,characterPositionColumn);
-        this.characterPositionRow.set(String.valueOf(characterPositionRow));
-        this.characterPositionColumn.set(String.valueOf(characterPositionColumn));
+        mazeDisplayer.setMaze(maze, viewModel.getStartPosition(), viewModel.getGoalPosition());
     }
 
     public void generateMaze() {
@@ -83,8 +106,6 @@ public class MyViewController implements Observer, IView {
         btn_generateMaze.setDisable(false);
         btn_solveMaze.setDisable(false);
     }
-
-
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

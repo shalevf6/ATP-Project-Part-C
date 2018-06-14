@@ -23,38 +23,23 @@ import java.util.ResourceBundle;
 public class MazeDisplayer extends Canvas implements Displayer {
 
     private int[][] maze;
-    private int characterPositionRow = 0;
-    private int characterPositionColumn = 0;
     private Position goalPosition;
     private Position startPosition;
 
     //region Properties
 
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
-    private StringProperty ImageFileNameCharacter = new SimpleStringProperty();
     private StringProperty ImageFileNameGoal = new SimpleStringProperty();
     private StringProperty ImageFileNameStart = new SimpleStringProperty();
 
-    public void setMaze(int[][] maze) {
+    public void setMaze(int[][] maze, Position startPosition, Position goalPosition) {
         this.maze = maze;
+        this.startPosition = startPosition;
+        this.goalPosition = goalPosition;
         redraw();
     }
 
-    public void setCharacterPosition(int row, int column) {
-        characterPositionRow = row;
-        characterPositionColumn = column;
-        redraw();
-    }
-
-    public int getCharacterPositionRow() {
-        return characterPositionRow;
-    }
-
-    public int getCharacterPositionColumn() {
-        return characterPositionColumn;
-    }
-
-    public void redraw() {
+    public void redraw(Object... objects) {
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
@@ -63,7 +48,6 @@ public class MazeDisplayer extends Canvas implements Displayer {
 
             try {
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 Image goalImage = new Image(new FileInputStream(ImageFileNameGoal.get()));
                 Image startImage = new Image(new FileInputStream(ImageFileNameStart.get()));
 
@@ -80,10 +64,7 @@ public class MazeDisplayer extends Canvas implements Displayer {
                     }
                 }
 
-                //Draw Character
-                gc.setFill(Color.RED);
-                // gc.fillOval(characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
+                //Draw Start & Goal Positions
                 gc.drawImage(goalImage, goalPosition.getColumnIndex() * cellWidth, goalPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
                 gc.drawImage(startImage, startPosition.getColumnIndex() * cellWidth, startPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
             } catch (FileNotFoundException e) {
@@ -92,28 +73,12 @@ public class MazeDisplayer extends Canvas implements Displayer {
         }
     }
 
-    public void setGoalPosition(Position goalPosition) {
-        this.goalPosition = goalPosition;
-    }
-
-    public void setStartPosition(Position startPosition) {
-        this.startPosition = startPosition;
-    }
-
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }
 
     public void setImageFileNameWall(String imageFileNameWall) {
         this.ImageFileNameWall.set(imageFileNameWall);
-    }
-
-    public String getImageFileNameCharacter() {
-        return ImageFileNameCharacter.get();
-    }
-
-    public void setImageFileNameCharacter(String imageFileNameCharacter) {
-        this.ImageFileNameCharacter.set(imageFileNameCharacter);
     }
 
     public String getImageFileNameGoal() {
