@@ -19,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -38,6 +39,11 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
+
+    @FXML
+    private BorderPane root;
+    private double mazeDispX;
+    private double mazeDispY;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -129,13 +135,19 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                System.out.println("Width: " + newSceneWidth);
+                root.setPrefWidth(newSceneWidth.doubleValue());
+                mazeDispX = newSceneWidth.doubleValue();
+                mazeDisplayer.setWidth(mazeDispX);
+                mazeDisplayer.redraw();
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                System.out.println("Height: " + newSceneHeight);
+                root.setPrefHeight(newSceneHeight.doubleValue());
+                mazeDispY = newSceneHeight.doubleValue();
+                mazeDisplayer.setHeight(mazeDispY);
+                mazeDisplayer.redraw();
             }
         });
     }
@@ -161,21 +173,21 @@ public class MyViewController implements Observer, IView {
 
         if (mazeDisplayer != null)
         {
-            int xMousePos = (int) ((me.getX()) / (mazeDisplayer.getWidth() / (viewModel.getMaze()[0].length)));
-            int yMousePos = (int) ((me.getY()) / (mazeDisplayer.getHeight() / (viewModel.getMaze().length)));
+            int xMousePos = (int) (((me.getX()) / (mazeDisplayer.getWidth() / viewModel.getMaze()[0].length)));
+            int yMousePos = (int) (((me.getY()) / (mazeDisplayer.getHeight() / viewModel.getMaze().length)));
             System.out.println(me.getSceneX());
             System.out.println(me.getSceneY());
 
             if (!viewModel.didFinished())
             {
                 if (yMousePos < viewModel.getCharacterPositionRow())
-                    viewModel.moveCharacter(KeyCode.NUMPAD8);
+                    viewModel.moveCharacter(KeyCode.UP);
                 if (yMousePos > viewModel.getCharacterPositionRow())
-                    viewModel.moveCharacter(KeyCode.NUMPAD2);
+                    viewModel.moveCharacter(KeyCode.DOWN);
                 if (xMousePos < viewModel.getCharacterPositionColumn())
-                    viewModel.moveCharacter(KeyCode.NUMPAD4);
-                if (xMousePos > viewModel.getCharacterPositionColumn())
-                    viewModel.moveCharacter(KeyCode.NUMPAD6);
+                    viewModel.moveCharacter(KeyCode.LEFT);
+                    if (xMousePos > viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.RIGHT);
             }
         }
 
@@ -248,6 +260,25 @@ public class MyViewController implements Observer, IView {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void zoomInOut(ScrollEvent scrollEvent) {
+        try {
+            viewModel.getMaze();
+            AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
+            double zoomFa;
+            if (scrollEvent.isControlDown()) {
+                zoomFa = 1.3;
+                double deltaY = scrollEvent.getDeltaY();
+                if (deltaY < 0) {
+                    zoomFa = 1 / zoomFa;
+                }
+                zoomOp.zoom(mazeDisplayer, zoomFa, scrollEvent.getSceneX(), scrollEvent.getSceneY());
+                scrollEvent.consume();
+            }
+        } catch (NullPointerException e) {
+            scrollEvent.consume();
         }
     }
 

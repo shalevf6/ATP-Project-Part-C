@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<StackPane  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane fx:id="root" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
