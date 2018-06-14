@@ -2,6 +2,7 @@ package ViewModel;
 
 import Model.IModel;
 import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,7 +23,6 @@ public class        MyViewModel extends Observable implements Observer {
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
 
-
     public MyViewModel(IModel model) {
         this.model = model;
     }
@@ -36,7 +36,7 @@ public class        MyViewModel extends Observable implements Observer {
                 CharacterPositionColumnIndex = model.getCharacterPositionColumn();
                 characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
                 setChanged();
-                notifyObservers();
+                notifyObservers(arg);
             }
         });
     }
@@ -56,8 +56,13 @@ public class        MyViewModel extends Observable implements Observer {
     public void save(String chosen) {
         model.save(chosen);
     }
+
     public int[][] getMaze() {
         return model.getMaze();
+    }
+
+    public Solution getSolution() {
+        return model.getSolution();
     }
 
     public int getCharacterPositionRow() {

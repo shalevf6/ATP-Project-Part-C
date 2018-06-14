@@ -63,7 +63,7 @@ public class MyModel extends Observable implements IModel {
             characterPositionRow = maze.getStartPosition().getRowIndex();
             characterPositionColumn = maze.getStartPosition().getColumnIndex();
             setChanged();
-            notifyObservers();
+            notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
         });
     }
 
@@ -72,7 +72,7 @@ public class MyModel extends Observable implements IModel {
         threadPool.execute(() -> {
             solveMazeSearchProblem();
             setChanged();
-            notifyObservers();
+            notifyObservers("SolutionDisplayer");
         });
     }
 
@@ -115,8 +115,7 @@ public class MyModel extends Observable implements IModel {
                         toServer.flush();
                         toServer.writeObject(maze);
                         toServer.flush();
-                        Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
-                        ArrayList<AState> mazeSolutionSteps = mazeSolution.getSolutionPath();
+                        solution = (Solution) fromServer.readObject();
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -217,7 +216,7 @@ public class MyModel extends Observable implements IModel {
         if (getCharacterPositionRow() == maze.getGoalPosition().getRowIndex() && getCharacterPositionColumn() == maze.getGoalPosition().getColumnIndex())
             didWeSolve = true;
         setChanged();
-        notifyObservers();
+        notifyObservers(didWeSolve ? "PlayerDisplayer, SUCCESS" : "PlayerDisplayer");
     }
     public void load(File chosen)
     {
@@ -225,7 +224,7 @@ public class MyModel extends Observable implements IModel {
             ObjectInputStream readFromFile = new ObjectInputStream(new FileInputStream(chosen));
             maze = new Maze((byte[])(readFromFile.readObject()));
             setChanged();
-            notifyObservers();
+            notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
