@@ -19,10 +19,11 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-           xmlns:About.fx="http://www.w3.org/1999/XSL/Transform" fx:controller="View.MyViewController">
+
+
+<StackPane  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane fx:id="root" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
@@ -113,7 +114,7 @@
                <children>
                    <PlayerDisplayer fx:id="playerDisplayer" imageFileNameCharacter="Resources/Images/character1.jpg" />
                    <SolutionDisplayer fx:id="solutionDisplayer" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
-                   <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameCharacter="Resources/Images/character1.jpg" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="600.0" />
+                   <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="600.0" />
                </children>
             </StackPane>
          </center>
