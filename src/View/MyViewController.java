@@ -46,7 +46,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.TextField saveGame;
     public javafx.scene.control.Button btn_save_comfermed;
-    TextField textField_to_save;
+    private TextField textField_to_save;
 
 
     @FXML
@@ -243,7 +243,7 @@ public class MyViewController implements Observer, IView {
             click.setText("Save");
             textField_to_save=new TextField();
             textField_to_save.setLayoutX(7);
-            click.setOnAction(event ->{if(!textField_to_save.equals(""))
+            click.setOnAction(event ->{if(!textField_to_save.toString().equals(""))
                 stage.close();
             else
                 {
@@ -254,7 +254,6 @@ public class MyViewController implements Observer, IView {
             StackPane layout =new StackPane();
             layout.getChildren().add(textField_to_save);
             layout.getChildren().add(click);
-
             stage.setTitle("Save Maze");
             Scene scene = new Scene(layout, 400, 350);
             stage.setScene(scene);
