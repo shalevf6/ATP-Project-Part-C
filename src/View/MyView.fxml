@@ -19,6 +19,8 @@
 <?import javafx.scene.layout.VBox?>
 
 
+
+
 <StackPane  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
       <BorderPane fx:id="root" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
@@ -43,12 +45,14 @@
                         <Menu mnemonicParsing="false" text="Help">
                           <items>
                               <MenuItem mnemonicParsing="false" text="Game rules" />
-                            <MenuItem mnemonicParsing="false" text="About" />
+                            <MenuItem mnemonicParsing="false" text="About" onAction="#About"/>
+
                           </items>
                         </Menu>
                          </menus>
                      </MenuBar>
                  </children>
+
              </VBox>
          </top>
          <bottom>
