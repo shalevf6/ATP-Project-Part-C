@@ -234,7 +234,7 @@ public class MyModel extends Observable implements IModel {
     public void save(String name)
     {
 
-        File savedMaze = new File("./savedMazes",name);
+        File savedMaze = new File("C:\\Users\\עידן\\IdeaProjects\\ATP-Project-Part-C\\src\\savedMazes",name);
         boolean fileExists = savedMaze.exists();
         if(savedMaze.exists()){
             Alert alert = new Alert(Alert.AlertType.WARNING,"", ButtonType.YES, ButtonType.NO);

@@ -2,6 +2,7 @@ package View;
 
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,14 +13,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.StackPane;
+import javafx.stage.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -36,6 +42,10 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
+    public javafx.scene.control.TextField saveGame;
+    public javafx.scene.control.Button btn_save_comfermed;
+    TextField textField_to_save;
+
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -180,37 +190,16 @@ public class MyViewController implements Observer, IView {
 
     }
 
-    public void saveGame(ActionEvent actionEvent) {
-    if(viewModel.getMaze()==null) {
 
-        Alert alert = new Alert(Alert.AlertType.WARNING,"", ButtonType.OK);
-        alert.setTitle("Warning!");  //warning box title
-        alert.setHeaderText("WARNING!!!");// Header
-        alert.setContentText("you must generate the maze before you save it!"); //Discription of warning
-        alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return;
-        } else {
-            return;
-        }
-    }
-    else
-    {
-        viewModel.save(get_saved_game_name(actionEvent));
-    }
-    }
-
-    private String get_saved_game_name(ActionEvent actionEvent) {
-        String str="";
-        return str;
-    }
 
 
     public void loadGame(ActionEvent actionEvent) {
 
-    }
+
+
+
+}
 
     public void solveMaze(ActionEvent actionEvent) {
     }
@@ -218,16 +207,47 @@ public class MyViewController implements Observer, IView {
     public void SaveGame(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            stage.setTitle("SaveGameController");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("SaveGame.fxml").openStream());
-            Scene scene = new Scene(root, 400, 350);
+            Button click=new Button ();
+            click.setText("Save");
+            textField_to_save=new TextField();
+            textField_to_save.setLayoutX(7);
+            click.setOnAction(event ->{if(!textField_to_save.equals(""))
+                stage.close();
+            else
+                {
+                    showAlert("Wrong input you slimy fuck!", "the input is empty");
+                }
+                });
+
+            StackPane layout =new StackPane();
+            layout.getChildren().add(textField_to_save);
+            layout.getChildren().add(click);
+
+            stage.setTitle("Save Maze");
+            Scene scene = new Scene(layout, 400, 350);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
+
+            stage.showAndWait();
+            while(textField_to_save.getText().equals(""))
+            stage.showAndWait();
+            String ans =textField_to_save.getText();
+
+            viewModel.save(ans);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void handleTosave(ActionEvent actionEvent){
+        String res="";
+        res=textField_to_save.getText();
+        if(res.equals(""))
+            showAlert("Wrong input you slimy fuck!", "the input is empty");
+        else {
+        }
+        return ;
+
     }
 
 }

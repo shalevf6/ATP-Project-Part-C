@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="409.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
@@ -9,6 +11,12 @@
         <Label layoutX="7.0" layoutY="43.0" text="find out the purpose of life and found it by solving this game at the" />
         <Label layoutX="7.0" layoutY="60.0" text="best time they could find! now is you'r  time " />
         <Label layoutX="7.0" layoutY="77.0" text="to shine and solve it as well, Good luck!" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+
+         </image>
+      </ImageView>
+        
 
        
 
