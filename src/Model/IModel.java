@@ -14,11 +14,13 @@ public interface IModel {
     int[][] getMaze();
     int getCharacterPositionRow();
     int getCharacterPositionColumn();
-    void load(File chosen);
+    void load(String chosen);
     void save(String name);
     boolean getIfFinish();
     Position getGoalPosition();
     Position getStartPosition();
     Solution getSolution();
     void exit();
+
+    void closeModel();
 }

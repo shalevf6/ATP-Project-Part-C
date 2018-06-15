@@ -218,13 +218,33 @@ public class MyModel extends Observable implements IModel {
         setChanged();
         notifyObservers(didWeSolve ? "PlayerDisplayer, SUCCESS" : "PlayerDisplayer");
     }
-    public void load(File chosen)
+
+
+    public void load(String name)
     {
         try {
-            ObjectInputStream readFromFile = new ObjectInputStream(new FileInputStream(chosen));
-            maze = new Maze((byte[])(readFromFile.readObject()));
-            setChanged();
-            notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
+
+            File LoadMaze = new File("C:\\Users\\עידן\\IdeaProjects\\ATP-Project-Part-C\\src\\savedMazes",name);
+            boolean fileExists = LoadMaze.exists();
+            if(!fileExists) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.OK);
+                alert.setTitle("Warning!");  //warning box title
+                alert.setHeaderText("WARNING!!!");// Header
+                alert.setContentText("File not exists, Try Again"); //Discription of warning
+                alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    alert.close();
+                } else {
+                    return;
+                }
+            }
+            if(!fileExists) {
+                ObjectInputStream readFromFile = new ObjectInputStream(new FileInputStream(LoadMaze));
+                maze = new Maze((byte[]) (readFromFile.readObject()));
+                setChanged();
+                notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -265,6 +285,11 @@ public class MyModel extends Observable implements IModel {
     public void exit() {
         stopServers();
         threadPool.shutdown();
+    }
+
+    @Override
+    public void closeModel() {
+        this.exit();
     }
 
     @Override
