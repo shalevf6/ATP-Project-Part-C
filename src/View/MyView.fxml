@@ -18,12 +18,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-
-
-<StackPane  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane fx:id="root" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" onMouseDragged="#mouseDragging" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane fx:id="root" onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
@@ -32,9 +29,8 @@
                              <Menu mnemonicParsing="false" text="File">
                                  <items>
                               <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
-                               <MenuItem mnemonicParsing="false" text="Save" onAction="#SaveGame"/>
-                               <MenuItem onAction="#loadGame" mnemonicParsing="false" text="Load" />
-                               <MenuItem mnemonicParsing="false" text="Exit" />
+                               <MenuItem mnemonicParsing="false" onAction="#SaveGame" text="Save" />
+                               <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load" />
                                  </items>
                              </Menu>
                              <Menu mnemonicParsing="false" text="Options">
@@ -42,10 +38,15 @@
                                      <MenuItem mnemonicParsing="false" text="Properties" />
                                  </items>
                              </Menu>
+                        <Menu mnemonicParsing="false" text="Exit">
+                           <items>
+                               <MenuItem mnemonicParsing="false" onAction="#Exit" text="Exit" />
+                           </items>
+                        </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                           <items>
-                              <MenuItem mnemonicParsing="false" text="Game rules" />
-                            <MenuItem mnemonicParsing="false" text="About" onAction="#About"/>
+                              <MenuItem mnemonicParsing="false" onAction="#GameRules" text="Game rules" />
+                            <MenuItem mnemonicParsing="false" onAction="#About" text="About" />
 
                           </items>
                         </Menu>

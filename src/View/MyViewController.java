@@ -13,13 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -122,11 +119,7 @@ public class MyViewController implements Observer, IView {
         btn_solveMaze.setDisable(false);
     }
 
-    private void showAlert(String alertMessage) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(alertMessage);
-        alert.show();
-    }
+
 
     private void showAlert(String title, String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -167,7 +160,8 @@ public class MyViewController implements Observer, IView {
             stage.setTitle("AboutController");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 400, 350);
+            Scene scene = new Scene(root, 380, 130);
+
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -175,6 +169,59 @@ public class MyViewController implements Observer, IView {
             e.printStackTrace();
         }
     }
+    public void GameRules(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("GameRulesController");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Game rules.fxml").openStream());
+            Scene scene = new Scene(root, 340, 100);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void Exit(ActionEvent actionEvent) {
+        exitProject();
+    }
+    public void SetStageNewEvent(ActionEvent actionEvent) {
+        Alert alertExit = new Alert(Alert.AlertType.NONE);
+        ButtonType newGame = new ButtonType(" Hell yeah! Start fresh", ButtonBar.ButtonData.YES);
+        ButtonType NoExitbtn = new ButtonType("No No I'm going to win this one! ", ButtonBar.ButtonData.NO);
+        alertExit.getButtonTypes().setAll(NoExitbtn,newGame);
+        alertExit.setContentText("Are you really really really sure you want to Start a New Game??");
+        Optional<ButtonType> result = alertExit.showAndWait();
+        if (result.get() == newGame){
+            this.generateMaze();
+
+        } else {
+            alertExit.close();
+        }
+
+    }
+
+
+
+    public void exitProject() {
+        Alert alertExit = new Alert(Alert.AlertType.NONE);
+        ButtonType Exitbtn = new ButtonType("Exit For Life", ButtonBar.ButtonData.YES);
+        ButtonType NoExitbtn = new ButtonType("Stay Here Forever", ButtonBar.ButtonData.NO);
+
+        alertExit.getButtonTypes().setAll(NoExitbtn,Exitbtn);
+        alertExit.setContentText("Are you really really really sure you want to exit??");
+        Optional<ButtonType> result = alertExit.showAndWait();
+        if (result.get() == Exitbtn){
+            viewModel.closeModel();
+            Platform.exit();
+        } else {
+            alertExit.close();
+        }
+
+    }
+
+
 
     public void mouseDragging (MouseEvent me)
     {
@@ -218,20 +265,46 @@ public class MyViewController implements Observer, IView {
         return characterPositionColumn;
     }
 
-    public void SetStageNewEvent(ActionEvent actionEvent) {
-
-    }
 
 
 
 
 
     public void loadGame(ActionEvent actionEvent) {
+        try {
+            Stage stage1 = new Stage();
+            Button click=new Button ();
+            click.setText("Load");
+            textField_to_save=new TextField();
+            textField_to_save.setLayoutX(7);
+            click.setOnAction(event ->{if(!textField_to_save.toString().equals(""))
+                stage1.close();
+            else
+            {
+                showAlert("Wrong input you slimy fuck!", "the input is empty");
+            }
+            });
+            StackPane layout =new StackPane();
+            layout.getChildren().add(textField_to_save);
+            layout.getChildren().add(click);
+            stage1.setTitle("Load Maze");
+            Scene scene = new Scene(layout, 170, 170);
+            stage1.setScene(scene);
+            stage1.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+
+            stage1.showAndWait();
+            while(textField_to_save.getText().equals("") )
+                stage1.showAndWait();
+            String ans =textField_to_save.getText();
+            viewModel.load(ans);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
 
-}
 
     public void solveMaze(ActionEvent actionEvent) {
     }
@@ -250,35 +323,22 @@ public class MyViewController implements Observer, IView {
                     showAlert("Wrong input you slimy fuck!", "the input is empty");
                 }
                 });
-
             StackPane layout =new StackPane();
             layout.getChildren().add(textField_to_save);
             layout.getChildren().add(click);
             stage.setTitle("Save Maze");
-            Scene scene = new Scene(layout, 400, 350);
+            Scene scene = new Scene(layout, 170, 170);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
 
             stage.showAndWait();
-            while(textField_to_save.getText().equals(""))
-            stage.showAndWait();
+            while(textField_to_save.getText().equals("") )
+                stage.showAndWait();
             String ans =textField_to_save.getText();
-
             viewModel.save(ans);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void handleTosave(ActionEvent actionEvent){
-        String res="";
-        res=textField_to_save.getText();
-        if(res.equals(""))
-            showAlert("Wrong input you slimy fuck!", "the input is empty");
-        else {
-        }
-        return ;
-
     }
 
     public void zoomInOut(ScrollEvent scrollEvent) {

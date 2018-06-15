@@ -27,6 +27,10 @@ public class        MyViewModel extends Observable implements Observer {
         this.model = model;
     }
 
+    public void closeModel() {
+        model.closeModel();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(() -> {
@@ -49,7 +53,7 @@ public class        MyViewModel extends Observable implements Observer {
         model.solveMaze();
     }
 
-    public void load(File chosen) {
+    public void load(String chosen) {
         model.load(chosen);
     }
 
