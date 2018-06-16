@@ -7,6 +7,7 @@ import IO.MyDecompressorInputStream;
 import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
+import View.Main;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
@@ -14,6 +15,7 @@ import algorithms.search.Solution;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
+import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -220,66 +222,37 @@ public class MyModel extends Observable implements IModel {
     }
 
 
-    public void load(String name)
+    public boolean load()
     {
-        try {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Load Game");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Game-Saved-Files", "*.SavedMaze"));
+        fc.setInitialDirectory(new File(System.getProperty("user.dir")));
 
-            File LoadMaze = new File("C:\\Users\\עידן\\IdeaProjects\\ATP-Project-Part-C\\src\\savedMazes",name);
-            boolean fileExists = LoadMaze.exists();
-            if(!fileExists) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.OK);
-                alert.setTitle("Warning!");  //warning box title
-                alert.setHeaderText("WARNING!!!");// Header
-                alert.setContentText("File not exists, Try Again"); //Discription of warning
-                alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    alert.close();
-                } else {
-                    return;
-                }
-            }
-            if(!fileExists) {
-                ObjectInputStream readFromFile = new ObjectInputStream(new FileInputStream(LoadMaze));
-                maze = new Maze((byte[]) (readFromFile.readObject()));
-                setChanged();
-                notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+        File file = fc.showOpenDialog(Main.pStage);
+        if (file != null){
 
-    public void save(String name)
-    {
-
-        File savedMaze = new File("C:\\Users\\עידן\\IdeaProjects\\ATP-Project-Part-C\\src\\savedMazes",name);
-        boolean fileExists = savedMaze.exists();
-        if(savedMaze.exists()){
-            Alert alert = new Alert(Alert.AlertType.WARNING,"", ButtonType.YES, ButtonType.NO);
-            alert.setTitle("Warning!");  //warning box title
-            alert.setHeaderText("WARNING!!!");// Header
-            alert.setContentText("File already exists. Overwrite?"); //Discription of warning
-            alert.getDialogPane().setPrefSize(200, 100); //sets size of alert box
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.YES){
-                fileExists=false;
-            } else {
-             return;
-            }
-
-        }
-
-        if(!fileExists) {
             try {
-                ObjectOutputStream writeToFile = new ObjectOutputStream(new FileOutputStream(savedMaze));
-                writeToFile.writeObject(maze.toByteArray());
-                writeToFile.flush();
-                writeToFile.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                ObjectInputStream gameLoader = new ObjectInputStream(new FileInputStream(file));
+                maze = (Maze) gameLoader.readObject();
+                characterPositionRow = maze.getStartPosition().getRowIndex();
+                characterPositionColumn = maze.getStartPosition().getColumnIndex();
+                didWeSolve = false;
+
+                setChanged();
+                notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
+                return true;
+
             }
+            catch (Exception e) {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Could not load The game Ha Ha :(\n Please try again!");
+                a.showAndWait();
+                return false;
+            }
+
         }
+        return false;
     }
 
     public void exit() {
@@ -291,6 +264,41 @@ public class MyModel extends Observable implements IModel {
     public void closeModel() {
         this.exit();
     }
+
+    @Override
+    public void saveGame() {
+
+
+            FileChooser fc = new FileChooser();
+            fc.setTitle(" It's Time To Save The Game");
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Game-Saved-Files", "*.SavedMaze"));
+            fc.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+            File file_to_save = fc.showSaveDialog(Main.pStage);
+            if (file_to_save != null){
+                boolean if_OK = false;
+                try{
+                    ObjectOutputStream Saver = new ObjectOutputStream(new FileOutputStream(file_to_save));
+                    Saver.flush();
+                    Saver.writeObject(maze);
+                    Saver.flush();
+                    Saver.close();
+                    if_OK = true;
+
+                } catch (Exception e){
+                    if_OK = false;
+                }
+                finally {
+                    Alert status = new Alert(if_OK ? Alert.AlertType.CONFIRMATION : Alert.AlertType.ERROR);
+                    status.setContentText(if_OK ? "Game Saved!" : " Don't Know why, But Could not save game :(\n Please try again!");
+                    status.showAndWait();
+                }
+
+            }
+
+        }
+
+
 
     @Override
     public boolean getIfFinish()

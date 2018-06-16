@@ -14,8 +14,7 @@ public interface IModel {
     int[][] getMaze();
     int getCharacterPositionRow();
     int getCharacterPositionColumn();
-    void load(String chosen);
-    void save(String name);
+    boolean load();
     boolean getIfFinish();
     Position getGoalPosition();
     Position getStartPosition();
@@ -23,4 +22,7 @@ public interface IModel {
     void exit();
 
     void closeModel();
+
+    void saveGame();
+
 }

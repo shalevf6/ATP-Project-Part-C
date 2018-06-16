@@ -271,36 +271,11 @@ public class MyViewController implements Observer, IView {
 
 
     public void loadGame(ActionEvent actionEvent) {
-        try {
-            Stage stage1 = new Stage();
-            Button click=new Button ();
-            click.setText("Load");
-            textField_to_save=new TextField();
-            textField_to_save.setLayoutX(7);
-            click.setOnAction(event ->{if(!textField_to_save.toString().equals(""))
-                stage1.close();
-            else
-            {
-                showAlert("Wrong input you slimy fuck!", "the input is empty");
-            }
-            });
-            StackPane layout =new StackPane();
-            layout.getChildren().add(textField_to_save);
-            layout.getChildren().add(click);
-            stage1.setTitle("Load Maze");
-            Scene scene = new Scene(layout, 170, 170);
-            stage1.setScene(scene);
-            stage1.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-
-            stage1.showAndWait();
-            while(textField_to_save.getText().equals("") )
-                stage1.showAndWait();
-            String ans =textField_to_save.getText();
-            viewModel.load(ans);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (viewModel.load())
+            btn_solveMaze.setDisable(false);
+        actionEvent.consume();
     }
+
 
 
 
@@ -309,37 +284,12 @@ public class MyViewController implements Observer, IView {
     public void solveMaze(ActionEvent actionEvent) {
     }
 
-    public void SaveGame(ActionEvent actionEvent) {
-        try {
-            Stage stage = new Stage();
-            Button click=new Button ();
-            click.setText("Save");
-            textField_to_save=new TextField();
-            textField_to_save.setLayoutX(7);
-            click.setOnAction(event ->{if(!textField_to_save.toString().equals(""))
-                stage.close();
-            else
-                {
-                    showAlert("Wrong input you slimy fuck!", "the input is empty");
-                }
-                });
-            StackPane layout =new StackPane();
-            layout.getChildren().add(textField_to_save);
-            layout.getChildren().add(click);
-            stage.setTitle("Save Maze");
-            Scene scene = new Scene(layout, 170, 170);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-
-            stage.showAndWait();
-            while(textField_to_save.getText().equals("") )
-                stage.showAndWait();
-            String ans =textField_to_save.getText();
-            viewModel.save(ans);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void SaveGame(){
+        viewModel.saveGame();
     }
+
+
+
 
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {

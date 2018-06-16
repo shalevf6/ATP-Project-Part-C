@@ -10,11 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 import java.util.Optional;
 
 public class Main extends Application {
+
+    public static Window pStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
