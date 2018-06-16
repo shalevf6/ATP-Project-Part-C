@@ -42,14 +42,14 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.TextField saveGame;
+    public javafx.scene.control.Button btn_ResetZoom;
     public javafx.scene.control.Button btn_save_comfermed;
     private TextField textField_to_save;
-
-
-    @FXML
-    private BorderPane root;
+    public BorderPane BRG;
     private double mazeDispX;
     private double mazeDispY;
+    private double mazeOrX;
+    private double mazeOry;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -119,7 +119,9 @@ public class MyViewController implements Observer, IView {
         btn_solveMaze.setDisable(false);
     }
 
-
+    public void ResetZoom (){
+        mazeDisplayer.ResetZooming(mazeOrX,mazeOry);
+    }
 
     private void showAlert(String title, String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -137,18 +139,19 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                root.setPrefWidth(newSceneWidth.doubleValue());
+                BRG.setPrefWidth(newSceneWidth.doubleValue());
                 mazeDispX = newSceneWidth.doubleValue();
-                mazeDisplayer.setWidth(mazeDispX);
+                mazeDisplayer.setWidth(mazeDispX - 190);
                 mazeDisplayer.redraw();
+
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                root.setPrefHeight(newSceneHeight.doubleValue());
+                BRG.setPrefHeight(newSceneHeight.doubleValue());
                 mazeDispY = newSceneHeight.doubleValue();
-                mazeDisplayer.setHeight(mazeDispY);
+                mazeDisplayer.setHeight(mazeDispY - 90);
                 mazeDisplayer.redraw();
             }
         });
@@ -297,7 +300,7 @@ public class MyViewController implements Observer, IView {
             AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
             double zoomFa;
             if (scrollEvent.isControlDown()) {
-                zoomFa = 1.3;
+                zoomFa = 1.4;
                 double deltaY = scrollEvent.getDeltaY();
                 if (deltaY < 0) {
                     zoomFa = 1 / zoomFa;
