@@ -27,6 +27,10 @@ public class        MyViewModel extends Observable implements Observer {
         this.model = model;
     }
 
+    public  void saveGame() {
+        model.saveGame();
+    }
+
     public void closeModel() {
         model.closeModel();
     }
@@ -53,12 +57,8 @@ public class        MyViewModel extends Observable implements Observer {
         model.solveMaze();
     }
 
-    public void load(String chosen) {
-        model.load(chosen);
-    }
-
-    public void save(String chosen) {
-        model.save(chosen);
+    public boolean load() {
+       return model.load();
     }
 
     public int[][] getMaze() {
