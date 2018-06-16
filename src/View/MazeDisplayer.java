@@ -25,7 +25,8 @@ public class MazeDisplayer extends Canvas implements Displayer {
     private int[][] maze;
     private Position goalPosition;
     private Position startPosition;
-
+    private double orHeight;
+    private double orWidth;
     //region Properties
 
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
@@ -36,6 +37,8 @@ public class MazeDisplayer extends Canvas implements Displayer {
         this.maze = maze;
         this.startPosition = startPosition;
         this.goalPosition = goalPosition;
+        orHeight = getHeight();
+        orWidth = getWidth();
         redraw();
     }
 
@@ -73,6 +76,12 @@ public class MazeDisplayer extends Canvas implements Displayer {
         }
     }
 
+    public void ResetZooming(double x, double y)
+    {
+        setWidth(x);
+        setHeight(y);
+        redraw();
+    }
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }
