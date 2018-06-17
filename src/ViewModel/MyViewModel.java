@@ -36,7 +36,7 @@ public class        MyViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             if (o == model) {
                 characterPositionRowIndex = model.getCharacterPositionRow();
                 characterPositionRow.set(String.valueOf(characterPositionRowIndex));
@@ -45,7 +45,7 @@ public class        MyViewModel extends Observable implements Observer {
                 setChanged();
                 notifyObservers(arg);
             }
-        });
+        //});
     }
 
     public void generateMaze(int width, int height){

@@ -54,22 +54,22 @@ public class MyModel extends Observable implements IModel {
     public void generateMaze(int width, int height) {
         //Generate maze
         didWeSolve = false;
-        threadPool.execute(() -> {
+        //threadPool.submit(() -> {
             generateRandomMaze(width,height);
             characterPositionRow = maze.getStartPosition().getRowIndex();
             characterPositionColumn = maze.getStartPosition().getColumnIndex();
             setChanged();
-            notifyObservers("MazeDisplayer, PlayerDisplayer, SolutionDisplayer");
-        });
+            notifyObservers("MazeDisplayer, PlayerDisplayer");
+        //});
     }
 
     @Override
     public void solveMaze() {
-        threadPool.execute(() -> {
+        //threadPool.submit(() -> {
             solveMazeSearchProblem();
             setChanged();
             notifyObservers("SolutionDisplayer");
-        });
+        //});
     }
 
     private void generateRandomMaze(int width, int height) {

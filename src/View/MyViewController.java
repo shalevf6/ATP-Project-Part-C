@@ -62,23 +62,23 @@ public class MyViewController implements Observer, IView {
 
     @Override
     public void update(Observable o, Object arg) {
-        Platform.runLater(() -> {
-            String displayer = (String) arg;
+        String displayer = (String) arg;
+        //Platform.runLater(() -> {
             if (o == viewModel && displayer.contains("MazeDisplayer")) {
                 displayMaze(viewModel.getMaze());
                 btn_generateMaze.setDisable(true);
                 btn_solveMaze.setDisable(false);
             }
-            if (o == viewModel && displayer.contains("PlayerDisplayer")) {
-                displayPlayer(viewModel.getMaze());
-            }
-            if (o == viewModel && displayer.contains("SolutionDisplayer")) {
+            if (o == viewModel && displayer.contains("SolutionDisplayer"))
                 displaySolution(viewModel.getMaze());
-            }
+
+            if (o == viewModel && displayer.contains("PlayerDisplayer"))
+                displayPlayer(viewModel.getMaze());
+
             if (o == viewModel && displayer.contains("SUCCESS")) {
                 // implement success scenario
             }
-        });
+        //});
     }
 
     @Override
@@ -247,8 +247,6 @@ public class MyViewController implements Observer, IView {
 
     }
 
-
-
     public void mouseDragging (MouseEvent me)
     {
         System.out.println("mouse move");
@@ -351,7 +349,7 @@ public class MyViewController implements Observer, IView {
             GridPane.setConstraints(Algo,0,1);
             ChoiceBox<String> MazeType = new ChoiceBox<>();
             MazeType.getItems().addAll("myMazeGenerator","simpleMazeGenerator");
-            TextField NUM_OF_THREDES= new TextField("0");
+            TextField NUM_OF_THREDES= new TextField("4");
             Label label2 = new Label("MAZE TYPE");
             GridPane.setConstraints(label2,1,0);
             GridPane.setConstraints(MazeType,1,1);

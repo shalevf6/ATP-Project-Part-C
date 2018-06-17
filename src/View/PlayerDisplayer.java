@@ -29,7 +29,7 @@ public class PlayerDisplayer extends Canvas implements Displayer {
                 double canvasWidth = getWidth();
                 double cellHeight = canvasHeight / maze.length;
                 double cellWidth = canvasWidth / maze[0].length;
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
+                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellWidth, cellWidth, cellHeight);
             }
             catch (FileNotFoundException e) {
                     e.printStackTrace();

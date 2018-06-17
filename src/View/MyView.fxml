@@ -105,11 +105,11 @@
              </VBox>
          </left>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="pane" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                   <PlayerDisplayer fx:id="playerDisplayer" imageFileNameCharacter="Resources/Images/character1.jpg" />
-                   <SolutionDisplayer fx:id="solutionDisplayer" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
-                   <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="600.0" />
+                   <PlayerDisplayer height="${pane.height}" width="${pane.width}" fx:id="playerDisplayer" imageFileNameCharacter="Resources/Images/character1.jpg" />
+                   <SolutionDisplayer height="${pane.height}" width="${pane.width}" fx:id="solutionDisplayer" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
+                   <MazeDisplayer height="${pane.height}" width="${pane.width}" fx:id="mazeDisplayer"  imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" />
                </children>
             </StackPane>
          </center>
