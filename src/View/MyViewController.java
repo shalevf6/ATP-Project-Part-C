@@ -7,39 +7,36 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
-import java.util.Random;
 
 public class MyViewController implements Observer, IView {
 
+    @FXML
+    private StackPane pane;
     private MyViewModel viewModel;
     private boolean solved = false;
     public MazeDisplayer mazeDisplayer;
     public SolutionDisplayer solutionDisplayer;
     public PlayerDisplayer playerDisplayer;
+    public SuccessDisplayer successDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -89,58 +86,13 @@ public class MyViewController implements Observer, IView {
                 displayPlayer(viewModel.getMaze());
 
         if (o == viewModel && displayer.contains("SUCCESS")) {
+            // implement success scenario
+            solved = true;
             GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
             gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
-            displaySuccess();
-            // implement success scenario
+            successDisplayer.redraw(this);
         }
         //});
-    }
-
-    private void displaySuccess() {
-        Canvas successDisplay = new Canvas();
-        GraphicsContext gc = successDisplay.getGraphicsContext2D();
-        gc.clearRect(0,0, successDisplay.getWidth(), successDisplay.getHeight());
-
-        try {
-            Random rand = new Random();
-            int num = rand.nextInt(3);
-
-            String path =System.getProperty("user.dir") + "\\Resources\\images\\" + "success.gif";
-
-            Image win = new Image(new FileInputStream(path));
-            ImageView winGif =new ImageView( );
-            winGif.setImage(win);
-            winGif.setFitHeight(successDisplay.getHeight());
-            winGif.setFitWidth(successDisplay.getWidth());
-
-
-
-            Pane pane = new Pane();
-            Scene scene = new Scene(pane, successDisplay.getWidth(),successDisplay.getHeight());
-            Stage newStage = new Stage();
-            newStage.setTitle("You did it!");
-            newStage.setScene(scene);
-
-            Button button = new Button();
-            button.setText("Let me play again!");
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    newStage.close();
-                    event.consume();
-                }
-            });
-
-            winGif.setImage(win);
-            pane.getChildren().addAll(winGif, button);
-            newStage.initOwner(Main.pStage);
-
-            newStage.showAndWait();;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -284,6 +236,8 @@ public class MyViewController implements Observer, IView {
     }
 
     public void SetStageNewEvent(ActionEvent actionEvent) {
+        if (solved)
+            solved = false;
         Alert alertExit = new Alert(Alert.AlertType.NONE);
         ButtonType newGame = new ButtonType(" Hell yeah! Start fresh", ButtonBar.ButtonData.YES);
         ButtonType NoExitbtn = new ButtonType("No No I'm going to win this one! ", ButtonBar.ButtonData.NO);
@@ -292,11 +246,10 @@ public class MyViewController implements Observer, IView {
         Optional<ButtonType> result = alertExit.showAndWait();
         if (result.get() == newGame){
             this.generateMaze();
-
         } else {
             alertExit.close();
+            exitProject();
         }
-
     }
 
     public void exitProject() {

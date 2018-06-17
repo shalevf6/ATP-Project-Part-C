@@ -127,93 +127,91 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void moveCharacter(KeyCode movement) {
         if (maze != null) {
-            if (getCharacterPositionRow() == maze.getGoalPosition().getRowIndex() && getCharacterPositionColumn() == maze.getGoalPosition().getColumnIndex())
-                didWeSolve = true;
-            else {
-                switch (movement) {
-                    case NUMPAD8:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
-                            characterPositionRow--;
-                        break;
-                    case NUMPAD2:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)))
-                            characterPositionRow++;
-                        break;
-                    case NUMPAD6:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn + 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))
-                            characterPositionColumn++;
-                        break;
-                    case NUMPAD4:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn - 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
-                            characterPositionColumn--;
-                        break;
+            switch (movement) {
+                case NUMPAD8:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
+                        characterPositionRow--;
+                    break;
+                case NUMPAD2:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)))
+                        characterPositionRow++;
+                    break;
+                case NUMPAD6:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))
+                        characterPositionColumn++;
+                    break;
+                case NUMPAD4:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
+                        characterPositionColumn--;
+                    break;
 
 
-                    case UP:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
-                            characterPositionRow--;
-                        break;
-                    case DOWN:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)))
-                            characterPositionRow++;
-                        break;
-                    case RIGHT:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn + 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))
-                            characterPositionColumn++;
-                        break;
-                    case LEFT:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn - 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
-                            characterPositionColumn--;
-                        break;
+                case UP:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
+                        characterPositionRow--;
+                    break;
+                case DOWN:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)))
+                        characterPositionRow++;
+                    break;
+                case RIGHT:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))
+                        characterPositionColumn++;
+                    break;
+                case LEFT:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
+                        characterPositionColumn--;
+                    break;
 
 
-                    case NUMPAD7:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
-                                (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
-                                        !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
-                            characterPositionRow--;
-                            characterPositionColumn--;
-                        }
-                        break;
-                    case NUMPAD9:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
-                                (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
-                                        !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
-                            characterPositionRow--;
-                            characterPositionColumn++;
-                        }
-                        break;
-                    case NUMPAD3:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
-                                (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
-                                        !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
-                            characterPositionRow++;
-                            characterPositionColumn++;
-                        }
-                        break;
-                    case NUMPAD1:
-                        if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
-                                !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
-                                (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
-                                        !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
-                            characterPositionRow++;
-                            characterPositionColumn--;
-                        }
-                        break;
-                }
+                case NUMPAD7:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
+                        characterPositionRow--;
+                        characterPositionColumn--;
+                    }
+                    break;
+                case NUMPAD9:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn + 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
+                        characterPositionRow--;
+                        characterPositionColumn++;
+                    }
+                    break;
+                case NUMPAD3:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn + 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn + 1)))) {
+                        characterPositionRow++;
+                        characterPositionColumn++;
+                    }
+                    break;
+                case NUMPAD1:
+                    if (maze.isPositionInMaze(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
+                            !maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn - 1)) &&
+                            (!maze.isPositionAWall(new Position(characterPositionRow + 1, characterPositionColumn)) ||
+                                    !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))) {
+                        characterPositionRow++;
+                        characterPositionColumn--;
+                    }
+                    break;
             }
         }
+        if (getCharacterPositionRow() == maze.getGoalPosition().getRowIndex() && getCharacterPositionColumn() == maze.getGoalPosition().getColumnIndex())
+            didWeSolve = true;
         setChanged();
         notifyObservers(didWeSolve ? "PlayerDisplayer, SUCCESS" : "PlayerDisplayer");
     }
