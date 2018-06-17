@@ -1,30 +1,26 @@
 package View;
 
 import ViewModel.MyViewModel;
-import algorithms.mazeGenerators.Maze;
-import algorithms.search.Solution;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
-import javafx.stage.*;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.File;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -158,21 +154,48 @@ public class MyViewController implements Observer, IView {
     }
 
     public void About(ActionEvent actionEvent) {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("AboutController");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 380, 130);
+        Stage stage = new Stage();
+        stage.setTitle("About this Game");
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
+        Label firstLine = new Label("This game created by the three magnificent individuals that tried to");
+        GridPane.setConstraints(firstLine, 0, 0);
+        Label secondLine = new Label("find out the purpose of life and found it by solving this game at the");
+        GridPane.setConstraints(secondLine, 0, 1);
+        Label thiredLable = new Label("best time they could find! now is you're time");
+        GridPane.setConstraints(thiredLable, 0, 2);
+        Label forthLable = new Label("to shine and solve it as well, Good luck!");
+        GridPane.setConstraints(forthLable, 0, 3);
+        grid.getChildren().addAll(firstLine, secondLine, thiredLable, forthLable);
+        Scene scene = new Scene(grid, 430, 130);
+        scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
 
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        stage.setScene(scene);
+        stage.show();
     }
-    public void GameRules(ActionEvent actionEvent) {
+    public void GameRules(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        stage.setTitle("Game Rules");
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
+        Label firstLine = new Label("In this game,the player Starts from the Start Point");
+        GridPane.setConstraints(firstLine, 0, 0);
+        Label secondLine = new Label("and his goal is to get to Goal Point as quick as he");
+        GridPane.setConstraints(secondLine, 0, 1);
+        Label thiredLable = new Label("can...Good luck!");
+        GridPane.setConstraints(thiredLable, 0, 2);
+        grid.getChildren().addAll(firstLine, secondLine, thiredLable);
+        Scene scene = new Scene(grid, 320, 115);
+        scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
+
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void GameRules1(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
             stage.setTitle("GameRulesController");
@@ -311,6 +334,49 @@ public class MyViewController implements Observer, IView {
         } catch (NullPointerException e) {
             scrollEvent.consume();
         }
+    }
+
+    public void Properties(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Properties");
+            GridPane grid = new GridPane();
+            grid.setPadding(new Insets(10, 10, 10, 10));
+            grid.setVgap(8);
+            grid.setHgap(10);
+            Label firstLine = new Label("Algorithm");
+            GridPane.setConstraints(firstLine, 0, 0);
+            ChoiceBox<String> Algo =new ChoiceBox<>();
+            Algo.getItems().addAll("BFS","DFS","BEST");
+            GridPane.setConstraints(Algo,0,1);
+            ChoiceBox<String> MazeType = new ChoiceBox<>();
+            MazeType.getItems().addAll("Simple","My Maze");
+            TextField NUM_OF_THREDES= new TextField("0");
+            Label label2 = new Label("MAZE TYPE");
+            GridPane.setConstraints(label2,1,0);
+            GridPane.setConstraints(MazeType,1,1);
+            Label label3 = new Label("NUMBER OF THREADS");
+            GridPane.setConstraints(label3,2,0);
+            GridPane.setConstraints(NUM_OF_THREDES,2,1);
+            Button Save = new Button("Save");
+            GridPane.setConstraints(Save,1,4);
+            Save.setOnAction(event -> getChoice(Algo,MazeType,NUM_OF_THREDES,stage));
+            grid.getChildren().addAll(firstLine,Algo,label2,MazeType,label3,NUM_OF_THREDES,Save);
+            Scene scene = new Scene(grid,355,150);
+            scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (NullPointerException e) {
+            actionEvent.consume();
+        }
+    }
+
+    private void getChoice(ChoiceBox<String> algo, ChoiceBox<String> mazeType, TextField num_of_thredes ,Stage stage) {
+        String ChosenAlgo = algo.getValue();
+        String ChosenMaze = mazeType.getValue();
+        String Num_Of_thredes = num_of_thredes.getText();
+        viewModel.ChangeProperties(ChosenAlgo,ChosenMaze,Num_Of_thredes);
+        stage.close();
     }
 
 }

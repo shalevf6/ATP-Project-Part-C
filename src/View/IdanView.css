@@ -1,0 +1,49 @@
+.root{
+    -fx-background-color: #AB4642;
+    -fx-font-size: 10pt;
+
+}
+.label{
+    -fx-text-fill: black;
+    -fx-background-radius: 15;
+
+}
+.button{
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
+}
+.choice-box{
+    -fx-font: "David";
+    -x-prompt-text-fill :black;
+    -fx-text-color: black;
+    -fx-background-color: #86c1b9;
+    -fx-background-radius: 15;
+}
+.alert{
+    -fx-background-color: blue;
+    -fx-font: "David" ;
+    -fx-background-radius: 15;
+    -fx-background-color: Red;
+
+}
+.text-field{
+    -fx-font: "David";
+    -fx-prompt-text-fill :black;
+    -fx-text-color: black;
+    -fx-background-color: #86c1b9;
+    -fx-background-radius: 15;
+}
+.menu-bar{
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
+}
+.menu{
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
+}

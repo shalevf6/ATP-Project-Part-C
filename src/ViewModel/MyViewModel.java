@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
 
-import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -91,5 +90,9 @@ public class        MyViewModel extends Observable implements Observer {
 
     public Position getStartPosition() {
         return model.getStartPosition();
+    }
+
+    public void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_thredes) {
+        model.ChangeProperties(chosenAlgo,chosenMaze,num_of_thredes);
     }
 }
