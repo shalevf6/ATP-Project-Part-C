@@ -22,7 +22,7 @@ public class SolutionDisplayer extends Canvas implements Displayer {
 
     @Override
     public void redraw(Object... objects) {
-        if (objects.length == 3 && objects[0] instanceof int[][] && objects[1] instanceof Solution) {
+        if (objects.length == 2 && objects[0] instanceof int[][] && objects[1] instanceof Solution) {
             try {
                 Image solutionPathImage = new Image(new FileInputStream(ImageFileNameSolutionPath.get()));
                 GraphicsContext gc = getGraphicsContext2D();
