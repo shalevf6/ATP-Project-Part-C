@@ -169,7 +169,7 @@ public class MyViewController implements Observer, IView {
         Label forthLable = new Label("to shine and solve it as well, Good luck!");
         GridPane.setConstraints(forthLable, 0, 3);
         grid.getChildren().addAll(firstLine, secondLine, thiredLable, forthLable);
-        Scene scene = new Scene(grid, 430, 130);
+        Scene scene = new Scene(grid, 445, 130);
         scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
 
         stage.setScene(scene);
@@ -189,7 +189,7 @@ public class MyViewController implements Observer, IView {
         Label thiredLable = new Label("can...Good luck!");
         GridPane.setConstraints(thiredLable, 0, 2);
         grid.getChildren().addAll(firstLine, secondLine, thiredLable);
-        Scene scene = new Scene(grid, 320, 115);
+        Scene scene = new Scene(grid, 335, 115);
         scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
 
         stage.setScene(scene);
@@ -201,7 +201,7 @@ public class MyViewController implements Observer, IView {
             stage.setTitle("GameRulesController");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Game rules.fxml").openStream());
-            Scene scene = new Scene(root, 340, 100);
+            Scene scene = new Scene(root, 360, 100);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -362,7 +362,7 @@ public class MyViewController implements Observer, IView {
             GridPane.setConstraints(Save,1,4);
             Save.setOnAction(event -> getChoice(Algo,MazeType,NUM_OF_THREDES,stage));
             grid.getChildren().addAll(firstLine,Algo,label2,MazeType,label3,NUM_OF_THREDES,Save);
-            Scene scene = new Scene(grid,355,150);
+            Scene scene = new Scene(grid,370,150);
             scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
