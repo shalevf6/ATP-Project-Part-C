@@ -59,4 +59,10 @@ public class SuccessDisplayer extends Canvas implements Displayer {
             }
         }
     }
+
+    public void ResetZooming(double x,double y)
+    {
+        setScaleX(x);
+        setScaleY(y);
+    }
 }

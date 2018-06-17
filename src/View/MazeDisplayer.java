@@ -84,6 +84,7 @@ public class MazeDisplayer extends Canvas implements Displayer {
         setScaleY(y);
         redraw();
     }
+
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }

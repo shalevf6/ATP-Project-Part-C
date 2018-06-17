@@ -49,6 +49,13 @@ public class SolutionDisplayer extends Canvas implements Displayer {
         redraw(maze, solution);
     }
 
+    public void ResetZooming(double x,double y)
+    {
+        setScaleX(x);
+        setScaleY(y);
+        redraw();
+    }
+
     public String getImageFileNameSolutionPath() {
         return ImageFileNameSolutionPath.get();
     }
