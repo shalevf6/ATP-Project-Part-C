@@ -61,11 +61,7 @@
              </VBox>
          </top>
          <bottom>
-            <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Status bar" />
-               </children>
-            </HBox>
+            <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
              <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
@@ -117,7 +113,7 @@
              </VBox>
          </left>
          <center>
-            <StackPane fx:id="pane" prefHeight="399.0" prefWidth="381.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="pane" prefHeight="394.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                <children>
                    <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.jpg" width="${pane.width}" />
                    <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" imageFileNameSolutionPath="Resources/Images/path1.jpg" width="${pane.width}" />
