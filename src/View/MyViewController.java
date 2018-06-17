@@ -51,10 +51,8 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_save_comfermed;
     private TextField textField_to_save;
     public BorderPane BRG;
-    private double mazeDispX;
-    private double mazeDispY;
-    private double mazeOrX;
-    private double mazeOry;
+    private double originalMazeScaleX;
+    private double originalMazeScaleY;
 
     public StringProperty characterPositionRow = new SimpleStringProperty();
     public StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -178,10 +176,12 @@ public class MyViewController implements Observer, IView {
             viewModel.generateMaze(width, height);
         btn_generateMaze.setDisable(false);
         btn_solveMaze.setDisable(false);
+        originalMazeScaleX = mazeDisplayer.getScaleX();
+        originalMazeScaleY = mazeDisplayer.getScaleY();
     }
 
     public void ResetZoom (){
-        mazeDisplayer.ResetZooming(mazeOrX,mazeOry);
+        mazeDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
     }
 
     private void showAlert(String title, String alertMessage) {
@@ -202,22 +202,23 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                BRG.setPrefWidth(newSceneWidth.doubleValue());
-                mazeDispX = newSceneWidth.doubleValue();
-                mazeDisplayer.setWidth(mazeDispX - 190);
-                mazeDisplayer.redraw();
+                reDrewNewSize();
 
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                BRG.setPrefHeight(newSceneHeight.doubleValue());
-                mazeDispY = newSceneHeight.doubleValue();
-                mazeDisplayer.setHeight(mazeDispY - 90);
-                mazeDisplayer.redraw();
+                reDrewNewSize();
             }
         });
+    }
+
+    public void reDrewNewSize()
+    {
+        mazeDisplayer.redraw(viewModel.getMaze());
+        solutionDisplayer.redraw(viewModel.getMaze(),viewModel.getSolution());
+        playerDisplayer.redraw(viewModel.getMaze(),viewModel.getStartPosition(),viewModel.getGoalPosition());
     }
 
     public void About(ActionEvent actionEvent) {
@@ -322,12 +323,12 @@ public class MyViewController implements Observer, IView {
 
         if (mazeDisplayer != null)
         {
-            int xMousePos = (int) (((me.getX()) / (mazeDisplayer.getWidth() / viewModel.getMaze()[0].length)));
-            int yMousePos = (int) (((me.getY()) / (mazeDisplayer.getHeight() / viewModel.getMaze().length)));
-            System.out.println(me.getSceneX());
-            System.out.println(me.getSceneY());
+            double xMousePos = (me.getX() / playerDisplayer.getWidth());
+            double yMousePos = (me.getY() / playerDisplayer.getHeight());
+            double deltaY = Math.abs(viewModel.getCharacterPositionRow() - xMousePos);
+            double deltaX = Math.abs(viewModel.getCharacterPositionColumn() - yMousePos);
 
-            if (!viewModel.didFinished())
+            if ((deltaY < 2 || deltaX < 2) && !viewModel.didFinished())
             {
                 if (yMousePos < viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.UP);
@@ -335,7 +336,7 @@ public class MyViewController implements Observer, IView {
                     viewModel.moveCharacter(KeyCode.DOWN);
                 if (xMousePos < viewModel.getCharacterPositionColumn())
                     viewModel.moveCharacter(KeyCode.LEFT);
-                    if (xMousePos > viewModel.getCharacterPositionColumn())
+                if (xMousePos > viewModel.getCharacterPositionColumn())
                     viewModel.moveCharacter(KeyCode.RIGHT);
             }
         }
@@ -379,12 +380,17 @@ public class MyViewController implements Observer, IView {
             AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
             double zoomFa;
             if (scrollEvent.isControlDown()) {
-                zoomFa = 1.4;
+                zoomFa = 1.3;
                 double deltaY = scrollEvent.getDeltaY();
                 if (deltaY < 0) {
                     zoomFa = 1 / zoomFa;
                 }
-                zoomOp.zoom(mazeDisplayer, zoomFa, scrollEvent.getSceneX(), scrollEvent.getSceneY());
+                mazeDisplayer.setScaleX(mazeDisplayer.getScaleX()*zoomFa);
+                mazeDisplayer.setScaleY(mazeDisplayer.getScaleY()*zoomFa);
+                playerDisplayer.setScaleX(playerDisplayer.getScaleX()*zoomFa);
+                playerDisplayer.setScaleY(playerDisplayer.getScaleY()*zoomFa);
+                solutionDisplayer.setScaleX(solutionDisplayer.getScaleX()*zoomFa);
+                solutionDisplayer.setScaleY(solutionDisplayer.getScaleY()*zoomFa);
                 scrollEvent.consume();
             }
         } catch (NullPointerException e) {
