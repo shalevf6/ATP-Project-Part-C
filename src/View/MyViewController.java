@@ -347,10 +347,10 @@ public class MyViewController implements Observer, IView {
             Label firstLine = new Label("Algorithm");
             GridPane.setConstraints(firstLine, 0, 0);
             ChoiceBox<String> Algo =new ChoiceBox<>();
-            Algo.getItems().addAll("BFS","DFS","BEST");
+            Algo.getItems().addAll("BFS","DFS","BestFirstSearch");
             GridPane.setConstraints(Algo,0,1);
             ChoiceBox<String> MazeType = new ChoiceBox<>();
-            MazeType.getItems().addAll("Simple","My Maze");
+            MazeType.getItems().addAll("myMazeGenerator","simpleMazeGenerator");
             TextField NUM_OF_THREDES= new TextField("0");
             Label label2 = new Label("MAZE TYPE");
             GridPane.setConstraints(label2,1,0);
