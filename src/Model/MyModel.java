@@ -294,9 +294,41 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_thredes) {
+        int Thredes=Integer.parseInt(num_of_thredes);
+        boolean GoodInput = true;
+        if(Thredes<=0 || chosenAlgo==null||chosenMaze==null||num_of_thredes==null){
+            GoodInput=false;
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Bad Input  :(\n Please try again!");
+            a.showAndWait();
+        }
+        if(GoodInput) {
+            try {
 
+                File file = new File("./Resources/config.properties");
+                String first = new String("searchingAlgorithm=" + chosenAlgo+"\n");
+                String second = new String("mazeGenerator=" + chosenMaze+"\n");
+                String third = new String("threadPoolSize=" + num_of_thredes);
+                // if file doesnt exists, then create it
+                if (!file.exists()) {
+                    file.createNewFile();
+                } else {
+
+                }
+
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(first);
+                bw.write(second);
+                bw.write(third);
+                bw.close();
+
+                System.out.println("Done");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 
     @Override
     public boolean getIfFinish()
