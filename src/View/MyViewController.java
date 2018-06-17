@@ -175,6 +175,7 @@ public class MyViewController implements Observer, IView {
         stage.setScene(scene);
         stage.show();
     }
+
     public void GameRules(ActionEvent actionEvent){
         Stage stage = new Stage();
         stage.setTitle("Game Rules");
@@ -195,6 +196,7 @@ public class MyViewController implements Observer, IView {
         stage.setScene(scene);
         stage.show();
     }
+
     public void GameRules1(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
@@ -209,9 +211,11 @@ public class MyViewController implements Observer, IView {
             e.printStackTrace();
         }
     }
+
     public void Exit(ActionEvent actionEvent) {
         exitProject();
     }
+
     public void SetStageNewEvent(ActionEvent actionEvent) {
         Alert alertExit = new Alert(Alert.AlertType.NONE);
         ButtonType newGame = new ButtonType(" Hell yeah! Start fresh", ButtonBar.ButtonData.YES);
@@ -227,8 +231,6 @@ public class MyViewController implements Observer, IView {
         }
 
     }
-
-
 
     public void exitProject() {
         Alert alertExit = new Alert(Alert.AlertType.NONE);
@@ -289,31 +291,19 @@ public class MyViewController implements Observer, IView {
         return characterPositionColumn;
     }
 
-
-
-
-
-
     public void loadGame(ActionEvent actionEvent) {
         if (viewModel.load())
             btn_solveMaze.setDisable(false);
         actionEvent.consume();
     }
 
-
-
-
-
-
     public void solveMaze(ActionEvent actionEvent) {
+        viewModel.solveMaze();
     }
 
     public void SaveGame(){
         viewModel.saveGame();
     }
-
-
-
 
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {
