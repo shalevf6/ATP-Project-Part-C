@@ -7,27 +7,36 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.Random;
 
 public class MyViewController implements Observer, IView {
 
     private MyViewModel viewModel;
+    private boolean solved = false;
     public MazeDisplayer mazeDisplayer;
     public SolutionDisplayer solutionDisplayer;
     public PlayerDisplayer playerDisplayer;
@@ -70,23 +79,74 @@ public class MyViewController implements Observer, IView {
             btn_solveMaze.setDisable(false);
         }
 
-        if (o == viewModel && displayer.contains("SolutionDisplayer"))
+        if (o == viewModel && displayer.contains("SolutionDisplayer") && !displayer.contains("SUCCESS")) {
+            GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
+            gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
             displaySolution(viewModel.getMaze());
+        }
         else
             if (o == viewModel && displayer.contains("PlayerDisplayer"))
                 displayPlayer(viewModel.getMaze());
 
         if (o == viewModel && displayer.contains("SUCCESS")) {
+            GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
+            gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
+            displaySuccess();
             // implement success scenario
         }
         //});
     }
 
+    private void displaySuccess() {
+        Canvas successDisplay = new Canvas();
+        GraphicsContext gc = successDisplay.getGraphicsContext2D();
+        gc.clearRect(0,0, successDisplay.getWidth(), successDisplay.getHeight());
+
+        try {
+            Random rand = new Random();
+            int num = rand.nextInt(3);
+
+            String path =System.getProperty("user.dir") + "\\Resources\\images\\" + "success.gif";
+
+            Image win = new Image(new FileInputStream(path));
+            ImageView winGif =new ImageView( );
+            winGif.setImage(win);
+            winGif.setFitHeight(successDisplay.getHeight());
+            winGif.setFitWidth(successDisplay.getWidth());
+
+
+
+            Pane pane = new Pane();
+            Scene scene = new Scene(pane, successDisplay.getWidth(),successDisplay.getHeight());
+            Stage newStage = new Stage();
+            newStage.setTitle("You did it!");
+            newStage.setScene(scene);
+
+            Button button = new Button();
+            button.setText("Let me play again!");
+            button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    newStage.close();
+                    event.consume();
+                }
+            });
+
+            winGif.setImage(win);
+            pane.getChildren().addAll(winGif, button);
+            newStage.initOwner(Main.pStage);
+
+            newStage.showAndWait();;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void displaySolution(int[][] maze) {
-        //viewModel.solveMaze();
+        mazeDisplayer.setMaze(maze,viewModel.getStartPosition(),viewModel.getGoalPosition());
         solutionDisplayer.setSolution(maze, viewModel.getSolution());
-        displayPlayer(maze);
     }
 
     @Override
@@ -104,6 +164,9 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
+        solved = false;
+        GraphicsContext gc = solutionDisplayer.getGraphicsContext2D();
+        gc.clearRect(0,0,solutionDisplayer.getWidth(),solutionDisplayer.getHeight());
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
         btn_generateMaze.setDisable(true);
@@ -129,8 +192,10 @@ public class MyViewController implements Observer, IView {
     }
 
     public void KeyPressed(KeyEvent keyEvent) {
-        viewModel.moveCharacter(keyEvent.getCode());
-        keyEvent.consume();
+        if (!solved) {
+            viewModel.moveCharacter(keyEvent.getCode());
+            keyEvent.consume();
+        }
     }
 
     public void setResizeEvent(Scene scene) {
@@ -300,6 +365,7 @@ public class MyViewController implements Observer, IView {
     }
 
     public void solveMaze(ActionEvent actionEvent) {
+        solved = true;
         viewModel.solveMaze();
     }
 

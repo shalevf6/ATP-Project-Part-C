@@ -66,7 +66,13 @@ public class MazeDisplayer extends Canvas implements Displayer {
                         }
                     }
                 }
-
+                // setting a frame for the canvas
+                int frameThickness = 6;
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0,0,frameThickness,getHeight());
+                gc.fillRect(0,0,getWidth(),frameThickness);
+                gc.fillRect(getWidth() - frameThickness,0,frameThickness,getHeight());
+                gc.fillRect(0,getHeight() - frameThickness,getWidth(),frameThickness);
                 //Draw Start & Goal Positions
                 gc.drawImage(goalImage, goalPosition.getColumnIndex() * cellWidth, goalPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
                 gc.drawImage(startImage, startPosition.getColumnIndex() * cellWidth, startPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
