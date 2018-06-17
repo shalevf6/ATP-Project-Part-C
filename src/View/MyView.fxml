@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import View.MazeDisplayer?>
 <?import View.PlayerDisplayer?>
 <?import View.SolutionDisplayer?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
 <StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
       <BorderPane fx:id="BRG" onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
@@ -14,32 +26,32 @@
                  <children>
                      <MenuBar>
                          <menus>
-                             <Menu mnemonicParsing="false" text="File" style="-fx-background-color: #86c1b9">
+                             <Menu mnemonicParsing="false" style="-fx-background-color: #86c1b9" text="File">
                                  <items>
                               <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
                                <MenuItem mnemonicParsing="false" onAction="#SaveGame" text="Save" />
                                <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load" />
                                  </items>
                              </Menu>
-                             <Menu mnemonicParsing="false" text="Options" style="-fx-background-color: #86c1b9"   >
+                             <Menu mnemonicParsing="false" style="-fx-background-color: #86c1b9" text="Options">
                                  <items>
-                                     <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties"  />
+                                     <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties" />
                                  </items>
                              </Menu>
-                        <Menu mnemonicParsing="false" text="Exit" style="-fx-background-color: #86c1b9">
+                        <Menu mnemonicParsing="false" style="-fx-background-color: #86c1b9" text="Exit">
                            <items>
-                               <MenuItem mnemonicParsing="false" onAction="#Exit" text="Exit"  />
+                               <MenuItem mnemonicParsing="false" onAction="#Exit" text="Exit" />
                            </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Help" style="-fx-background-color: #86c1b9">
+                        <Menu mnemonicParsing="false" style="-fx-background-color: #86c1b9" text="Help">
                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#GameRules" text="Game rules"  />
+                              <MenuItem mnemonicParsing="false" onAction="#GameRules" text="Game rules" />
 
                           </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="About" style="-fx-background-color: #86c1b9">
+                        <Menu mnemonicParsing="false" style="-fx-background-color: #86c1b9" text="About">
                            <items>
-                              <MenuItem mnemonicParsing="false" onAction="#About" text="About"  />
+                              <MenuItem mnemonicParsing="false" onAction="#About" text="About" />
                            </items>
                         </Menu>
                          </menus>
@@ -79,7 +91,7 @@
                              <TextField fx:id="txtfld_rowsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                              <TextField fx:id="txtfld_columnsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                              <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                             <Button fx:id="btn_solveMaze" cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                             <Button fx:id="btn_solveMaze" cancelButton="true" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                              <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                              <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                              <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -105,11 +117,11 @@
              </VBox>
          </left>
          <center>
-            <StackPane fx:id="pane" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="pane" prefHeight="399.0" prefWidth="381.0" BorderPane.alignment="CENTER">
                <children>
-                   <PlayerDisplayer height="${pane.height}" width="${pane.width}" fx:id="playerDisplayer" imageFileNameCharacter="Resources/Images/character1.jpg" />
-                   <SolutionDisplayer height="${pane.height}" width="${pane.width}" fx:id="solutionDisplayer" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
-                   <MazeDisplayer height="${pane.height}" width="${pane.width}" fx:id="mazeDisplayer"  imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" />
+                   <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.jpg" width="${pane.width}" />
+                   <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" imageFileNameSolutionPath="Resources/Images/path1.jpg" width="${pane.width}" />
+                   <MazeDisplayer fx:id="mazeDisplayer" height="${pane.height}" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="${pane.width}" />
                </children>
             </StackPane>
          </center>

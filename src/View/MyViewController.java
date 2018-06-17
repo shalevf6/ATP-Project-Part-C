@@ -64,27 +64,29 @@ public class MyViewController implements Observer, IView {
     public void update(Observable o, Object arg) {
         String displayer = (String) arg;
         //Platform.runLater(() -> {
-            if (o == viewModel && displayer.contains("MazeDisplayer")) {
-                displayMaze(viewModel.getMaze());
-                btn_generateMaze.setDisable(true);
-                btn_solveMaze.setDisable(false);
-            }
-            if (o == viewModel && displayer.contains("SolutionDisplayer"))
-                displaySolution(viewModel.getMaze());
+        if (o == viewModel && displayer.contains("MazeDisplayer")) {
+            displayMaze(viewModel.getMaze());
+            btn_generateMaze.setDisable(true);
+            btn_solveMaze.setDisable(false);
+        }
 
+        if (o == viewModel && displayer.contains("SolutionDisplayer"))
+            displaySolution(viewModel.getMaze());
+        else
             if (o == viewModel && displayer.contains("PlayerDisplayer"))
                 displayPlayer(viewModel.getMaze());
 
-            if (o == viewModel && displayer.contains("SUCCESS")) {
-                // implement success scenario
-            }
+        if (o == viewModel && displayer.contains("SUCCESS")) {
+            // implement success scenario
+        }
         //});
     }
 
     @Override
     public void displaySolution(int[][] maze) {
-        viewModel.solveMaze();
+        //viewModel.solveMaze();
         solutionDisplayer.setSolution(maze, viewModel.getSolution());
+        displayPlayer(maze);
     }
 
     @Override
