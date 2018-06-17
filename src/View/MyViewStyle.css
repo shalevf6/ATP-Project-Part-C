@@ -1,28 +1,44 @@
 .root{
-    -fx-background-color: powderblue;
+
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
+    -fx-background-color: #AB4642;
+    -fx-font-size: 10pt;
 }
 
 Button {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
+
+
     -fx-font-weight: bold;
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
 Button:hover{
-    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+   /// -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-    -fx-background-radius: 3px, 3px, 2px, 1px;
+
     -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
-    -fx-text-fill: -fx-text-base-color;
+
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
 }
 
 .stackPane {
     -fx-border-color: black ;
-    -fx-background-color: #000000, #ff341d;
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
     -fx-background-insets: 0, 20 ;
     -fx-padding: 20 ;
     -fx-background-repeat: stretch;
@@ -31,7 +47,11 @@ Button:hover{
 }
 
 canvas {
-    -fx-background-color: #000000, #ff341d;
+
+    -fx-background-color: #86c1b9;
+    -fx-prompt-text-fill:#black ;
+    -fx-text-fill: Black;
+    -fx-background-radius: 15;
     -fx-background-insets: 0, 20 ;
     -fx-padding: 20 ;
 }
@@ -48,4 +68,11 @@ canvas {
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+.text-field{
+    -fx-font: "David";
+    -x-prompt-text-fill :black;
+    -fx-text-color: black;
+    -fx-background-color: #86c1b9;
+    -fx-background-radius: 15;
 }

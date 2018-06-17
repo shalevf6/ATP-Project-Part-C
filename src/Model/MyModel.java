@@ -1,8 +1,7 @@
 package Model;
 
-import Client.IClientStrategy;
 import Client.Client;
-import IO.MyCompressorOutputStream;
+import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
 import Server.Server;
 import Server.ServerStrategyGenerateMaze;
@@ -10,20 +9,15 @@ import Server.ServerStrategySolveSearchProblem;
 import View.Main;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -240,7 +234,7 @@ public class MyModel extends Observable implements IModel {
                 didWeSolve = false;
 
                 setChanged();
-                notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
+                notifyObservers("MazeDisplayer, SolutionDisplayer, PlayerDisplayer");
                 return true;
 
             }
@@ -298,6 +292,10 @@ public class MyModel extends Observable implements IModel {
 
         }
 
+    @Override
+    public void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_thredes) {
+
+    }
 
 
     @Override
