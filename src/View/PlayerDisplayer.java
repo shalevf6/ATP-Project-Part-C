@@ -43,6 +43,13 @@ public class PlayerDisplayer extends Canvas implements Displayer {
         redraw(maze, characterPositionRow, characterPositionColumn);
     }
 
+    public void ResetZooming(double x,double y)
+    {
+        setScaleX(x);
+        setScaleY(y);
+        redraw();
+    }
+
     public StringProperty imageFileNameCharacterProperty() {
         return ImageFileNameCharacter;
     }

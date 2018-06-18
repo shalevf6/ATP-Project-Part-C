@@ -47,7 +47,7 @@ Button:hover{
     -fx-padding: 20 ;
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.2, 0, 0);
 }
 
 canvas {
@@ -59,13 +59,14 @@ canvas {
     -fx-background-insets: 0, 20 ;
     -fx-padding: 20 ;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.2, 0, 0);
 }
 
 #maze{
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.2, 0, 0);
 }
 #mazeDisplayer{
     -fx-background-color: #000000, #ff341d;
@@ -73,7 +74,7 @@ canvas {
     -fx-padding: 20 ;
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.2, 0, 0);
 }
 .text-field{
     -x-prompt-text-fill :black;

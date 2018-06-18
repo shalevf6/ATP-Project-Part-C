@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class SolutionDisplayer extends Canvas implements Displayer {
 
-    ArrayList<AState> solutionPath;
+    private ArrayList<AState> solutionPath;
 
     private StringProperty ImageFileNameSolutionPath = new SimpleStringProperty();
 
@@ -47,6 +47,13 @@ public class SolutionDisplayer extends Canvas implements Displayer {
     public void setSolution(int[][] maze,Solution solution) {
         this.solutionPath = solution.getSolutionPath();
         redraw(maze, solution);
+    }
+
+    public void ResetZooming(double x,double y)
+    {
+        setScaleX(x);
+        setScaleY(y);
+        redraw();
     }
 
     public String getImageFileNameSolutionPath() {

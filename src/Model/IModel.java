@@ -12,15 +12,11 @@ public interface IModel {
     int getCharacterPositionRow();
     int getCharacterPositionColumn();
     boolean load();
-    boolean getIfFinish();
     Position getGoalPosition();
     Position getStartPosition();
     Solution getSolution();
     void exit();
-
     void closeModel();
-
     void saveGame();
-
     void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_thredes);
 }
