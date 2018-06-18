@@ -47,7 +47,6 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_ResetZoom;
     public javafx.scene.control.Button btn_save_comfermed;
     private TextField textField_to_save;
-    public BorderPane BRG;
     private double originalMazeScaleX;
     private double originalMazeScaleY;
 
@@ -168,9 +167,9 @@ public class MyViewController implements Observer, IView {
 
     public void reDrewNewSize()
     {
-        mazeDisplayer.redraw(viewModel.getMaze());
-        solutionDisplayer.redraw(viewModel.getMaze(),viewModel.getSolution());
-        playerDisplayer.redraw(viewModel.getMaze(),viewModel.getStartPosition(),viewModel.getGoalPosition());
+        mazeDisplayer.redraw();
+        solutionDisplayer.redraw();
+        playerDisplayer.redraw();
     }
 
     public void About(ActionEvent actionEvent) {
@@ -276,12 +275,11 @@ public class MyViewController implements Observer, IView {
 
         if (mazeDisplayer != null)
         {
-            double xMousePos = (me.getX() / playerDisplayer.getWidth());
-            double yMousePos = (me.getY() / playerDisplayer.getHeight());
-            double deltaY = Math.abs(viewModel.getCharacterPositionRow() - xMousePos);
-            double deltaX = Math.abs(viewModel.getCharacterPositionColumn() - yMousePos);
 
-            if ((deltaY < 2 || deltaX < 2) && !viewModel.didFinished())
+            double xMousePos = (me.getX() / (mazeDisplayer.getWidth() / viewModel.getMaze()[0].length));
+            double yMousePos = (me.getY() / (mazeDisplayer.getHeight() / viewModel.getMaze().length));
+
+            if (!viewModel.didFinished())
             {
                 if (yMousePos < viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.UP);
