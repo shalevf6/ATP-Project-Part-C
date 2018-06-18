@@ -7,7 +7,6 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -18,20 +17,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 
 public class MyViewController implements Observer, IView {
 
-    @FXML
-    private StackPane pane;
     private MyViewModel viewModel;
     private boolean solved = false;
     public MazeDisplayer mazeDisplayer;
@@ -44,12 +42,11 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
-    public javafx.scene.control.TextField saveGame;
     public javafx.scene.control.Button btn_ResetZoom;
-    public javafx.scene.control.Button btn_save_comfermed;
-    private TextField textField_to_save;
     private double originalMazeScaleX;
     private double originalMazeScaleY;
+    public static MediaPlayer player;
+    public static Media song;
 
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -87,10 +84,27 @@ public class MyViewController implements Observer, IView {
             // implement success scenario
             solved = true;
             GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
+            player.pause();
             gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
+            setSong("./Resources/music/successSong.mp3","success");
             successDisplayer.redraw(this);
         }
         //});
+    }
+
+    private void setSong(String path, String songPhase) {
+        String absolutePath = new File(path).getAbsolutePath();
+        if(songPhase.equals("success")) {
+            song = new Media(new File(absolutePath).toURI().toString());
+            player = new MediaPlayer(song);
+            player.setVolume(0.7);
+            player.play();
+        }
+        if(songPhase.equals("start")) {
+            song = new Media(new File(absolutePath).toURI().toString());
+            player = new MediaPlayer(song);
+            player.setVolume(0.5);
+        }
     }
 
     @Override
@@ -114,6 +128,10 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
+        if (player != null)
+            player.pause();
+        setSong("./Resources/music/startSong.mp3","start");
+        player.play();
         solved = false;
         GraphicsContext gc = solutionDisplayer.getGraphicsContext2D();
         gc.clearRect(0,0,solutionDisplayer.getWidth(),solutionDisplayer.getHeight());
@@ -229,12 +247,16 @@ public class MyViewController implements Observer, IView {
     }
 
     public void Exit(ActionEvent actionEvent) {
+        MyViewController.player.stop();
         exitProject();
     }
 
     public void SetStageNewEvent(ActionEvent actionEvent) {
-        if (solved)
+        if (solved) {
             solved = false;
+            if (player != null)
+                player.pause();
+        }
         Alert alertExit = new Alert(Alert.AlertType.NONE);
         ButtonType newGame = new ButtonType(" Hell yeah! Start fresh", ButtonBar.ButtonData.YES);
         ButtonType NoExitbtn = new ButtonType("No No I'm going to win this one! ", ButtonBar.ButtonData.NO);
@@ -258,6 +280,7 @@ public class MyViewController implements Observer, IView {
         alertExit.setContentText("Are you really really really sure you want to exit??");
         Optional<ButtonType> result = alertExit.showAndWait();
         if (result.get() == Exitbtn){
+            MyViewController.player.stop();
             viewModel.closeModel();
             Platform.exit();
         } else {
@@ -269,11 +292,10 @@ public class MyViewController implements Observer, IView {
     {
         if (mazeDisplayer != null)
         {
-
             double xMousePos = (me.getX() / (mazeDisplayer.getWidth() / viewModel.getMaze()[0].length));
             double yMousePos = (me.getY() / (mazeDisplayer.getHeight() / viewModel.getMaze().length));
 
-            if (!viewModel.didFinished())
+            if (!solved)
             {
                 if (yMousePos < viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.UP);
@@ -304,14 +326,27 @@ public class MyViewController implements Observer, IView {
     }
 
     public void loadGame(ActionEvent actionEvent) {
-        if (viewModel.load())
+        if (viewModel.load()) {
             btn_solveMaze.setDisable(false);
+            if (solved)
+                solved = false;
+            if (player != null)
+                player.pause();
+        }
         actionEvent.consume();
     }
 
     public void solveMaze(ActionEvent actionEvent) {
+        showSolveAlert();
         solved = true;
         viewModel.solveMaze();
+    }
+
+    private void showSolveAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Please wait patiently");
+        alert.setContentText("Solving maze...");
+        alert.show();
     }
 
     public void SaveGame(){
@@ -320,7 +355,6 @@ public class MyViewController implements Observer, IView {
 
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {
-            AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
             double zoomFa;
             if (scrollEvent.isControlDown()) {
                 zoomFa = 1.1;
@@ -328,19 +362,13 @@ public class MyViewController implements Observer, IView {
                 if (deltaY < 0) {
                     zoomFa = 2.0 - zoomFa;
                 }
-
-                /*
-                pane.setScaleX(pane.getScaleX()*zoomFa);
-                pane.setScaleY(pane.getScaleY()*zoomFa);
-                */
-                // pane.setMinSize();
                 mazeDisplayer.setScaleX(mazeDisplayer.getScaleX()*zoomFa);
                 mazeDisplayer.setScaleY(mazeDisplayer.getScaleY()*zoomFa);
                 playerDisplayer.setScaleX(playerDisplayer.getScaleX()*zoomFa);
                 playerDisplayer.setScaleY(playerDisplayer.getScaleY()*zoomFa);
                 solutionDisplayer.setScaleX(solutionDisplayer.getScaleX()*zoomFa);
                 solutionDisplayer.setScaleY(solutionDisplayer.getScaleY()*zoomFa);
-                //scrollEvent.consume();
+                scrollEvent.consume();
             }
         } catch (NullPointerException e) {
             scrollEvent.consume();
