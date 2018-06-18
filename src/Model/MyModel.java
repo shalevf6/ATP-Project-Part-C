@@ -7,6 +7,7 @@ import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import View.Main;
+import View.MyViewController;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -23,7 +24,7 @@ import java.util.concurrent.Executors;
 
 public class MyModel extends Observable implements IModel {
 
-    private ExecutorService threadPool = Executors.newCachedThreadPool();
+    // private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private int characterPositionRow;
@@ -252,7 +253,7 @@ public class MyModel extends Observable implements IModel {
 
     public void exit() {
         stopServers();
-        threadPool.shutdown();
+        // threadPool.shutdown();
     }
 
     @Override
