@@ -32,6 +32,7 @@ import java.util.Optional;
 
 public class MyViewController implements Observer, IView {
 
+    public StackPane pane;
     private MyViewModel viewModel;
     private boolean solved = false;
     public MazeDisplayer mazeDisplayer;
@@ -88,8 +89,8 @@ public class MyViewController implements Observer, IView {
             displaySolution(viewModel.getMaze());
         }
         else
-            if (o == viewModel && displayer.contains("PlayerDisplayer"))
-                displayPlayer(viewModel.getMaze());
+        if (o == viewModel && displayer.contains("PlayerDisplayer"))
+            displayPlayer(viewModel.getMaze());
 
         if (o == viewModel && displayer.contains("SUCCESS")) {
             // implement success scenario
@@ -179,11 +180,11 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+
                 mazeDisX = newSceneWidth.doubleValue() - borP.getLeft().getLayoutBounds().getWidth();
                 borP.setPrefWidth(newSceneWidth.doubleValue());
                 pane.setMaxSize(mazeDisX,mazeDisY);
                 mazeDisplayer.redraw();
-
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {

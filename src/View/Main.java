@@ -3,11 +3,13 @@ package View;
 import Model.*;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -45,19 +47,20 @@ public class Main extends Application {
     private void SetStageCloseEvent(Stage primaryStage) {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
+                Alert alertExit = new Alert(Alert.AlertType.NONE);
+                ButtonType Exitbtn = new ButtonType("Exit For Life", ButtonBar.ButtonData.YES);
+                ButtonType NoExitbtn = new ButtonType("Stay Here Forever", ButtonBar.ButtonData.NO);
+                alertExit.getButtonTypes().setAll(NoExitbtn, Exitbtn);
+                alertExit.setContentText("Are you really really really sure you want to exit??");
+                Optional<ButtonType> result = alertExit.showAndWait();
+                if (result.get() == Exitbtn) {
                     // ... user chose OK
                     // Close program
-                } else {
-                    // ... user chose CANCEL or closed the dialog
+                } else
                     windowEvent.consume();
-                }
             }
         });
     }
-
 
     public static void main(String[] args) {
         launch(args);
