@@ -18,6 +18,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
@@ -43,6 +45,15 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Button btn_ResetZoom;
+    public javafx.scene.control.Button btn_save_comfermed;
+    private TextField textField_to_save;
+    public BorderPane borP;
+    public StackPane ST;
+    public VBox leftM;
+    private double originalMazeScaleX;
+    private double originalMazeScaleY;
+    private double mazeDisX;
+    private double mazeDisY;
     private double originalMazeScaleX;
     private double originalMazeScaleY;
     public static MediaPlayer player;
@@ -168,23 +179,22 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                reDrewNewSize();
+                mazeDisX = newSceneWidth.doubleValue() - borP.getLeft().getLayoutBounds().getWidth();
+                borP.setPrefWidth(newSceneWidth.doubleValue());
+                pane.setMaxSize(mazeDisX,mazeDisY);
+                mazeDisplayer.redraw();
 
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                reDrewNewSize();
+                mazeDisY = newSceneHeight.doubleValue();
+                borP.setPrefHeight(mazeDisY - borP.getTop().getLayoutBounds().getHeight());
+                mazeDisplayer.setLayoutY(mazeDisY - pane.getScaleY());
+                mazeDisplayer.redraw();
             }
         });
-    }
-
-    public void reDrewNewSize()
-    {
-        mazeDisplayer.redraw();
-        solutionDisplayer.redraw();
-        playerDisplayer.redraw();
     }
 
     public void About(ActionEvent actionEvent) {
