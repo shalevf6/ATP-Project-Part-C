@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import View.SuccessDisplayer?>
-<StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<StackPane fx:id="ST" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane onKeyPressed="#KeyPressed"  onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane fx:id="borP" onKeyPressed="#KeyPressed"  onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
@@ -65,7 +65,7 @@
             <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
-             <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
+             <VBox fx:id="leftM" prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
                  <children>
                      <GridPane>
                          <columnConstraints>
