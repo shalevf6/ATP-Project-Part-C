@@ -273,7 +273,7 @@ public class MyViewController implements Observer, IView {
             double xMousePos = (me.getX() / (mazeDisplayer.getWidth() / viewModel.getMaze()[0].length));
             double yMousePos = (me.getY() / (mazeDisplayer.getHeight() / viewModel.getMaze().length));
 
-            if (!viewModel.didFinished())
+            if (!solved)
             {
                 if (yMousePos < viewModel.getCharacterPositionRow())
                     viewModel.moveCharacter(KeyCode.UP);
