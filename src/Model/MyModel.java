@@ -332,12 +332,6 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public boolean getIfFinish()
-    {
-        return didWeSolve;
-    }
-
-    @Override
     public int[][] getMaze() {
         return maze.getMaze();
     }

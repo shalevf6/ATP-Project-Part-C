@@ -21,6 +21,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.Observable;
@@ -103,9 +104,9 @@ public class MyViewController implements Observer, IView {
     public void displayPlayer(int[][] maze) {
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
-        playerDisplayer.setPlayer(maze,characterPositionRow,characterPositionColumn);
         this.characterPositionRow.set(String.valueOf(characterPositionRow));
         this.characterPositionColumn.set(String.valueOf(characterPositionColumn));
+        playerDisplayer.setPlayer(maze,characterPositionRow,characterPositionColumn);
     }
 
     @Override
@@ -267,25 +268,25 @@ public class MyViewController implements Observer, IView {
 
     public void mouseDragging (MouseEvent me)
     {
-        System.out.println("mouse move");
+        if(!solved) {
+            System.out.println("mouse move");
 
-        if (mazeDisplayer != null)
-        {
-            double xMousePos = (me.getX() / playerDisplayer.getWidth());
-            double yMousePos = (me.getY() / playerDisplayer.getHeight());
-            double deltaY = Math.abs(viewModel.getCharacterPositionRow() - xMousePos);
-            double deltaX = Math.abs(viewModel.getCharacterPositionColumn() - yMousePos);
+            if (mazeDisplayer != null) {
+                double xMousePos = (me.getX() / playerDisplayer.getWidth());
+                double yMousePos = (me.getY() / playerDisplayer.getHeight());
+                double deltaY = Math.abs(viewModel.getCharacterPositionRow() - xMousePos);
+                double deltaX = Math.abs(viewModel.getCharacterPositionColumn() - yMousePos);
 
-            if ((deltaY < 2 || deltaX < 2) && !viewModel.didFinished())
-            {
-                if (yMousePos < viewModel.getCharacterPositionRow())
-                    viewModel.moveCharacter(KeyCode.UP);
-                if (yMousePos > viewModel.getCharacterPositionRow())
-                    viewModel.moveCharacter(KeyCode.DOWN);
-                if (xMousePos < viewModel.getCharacterPositionColumn())
-                    viewModel.moveCharacter(KeyCode.LEFT);
-                if (xMousePos > viewModel.getCharacterPositionColumn())
-                    viewModel.moveCharacter(KeyCode.RIGHT);
+                if (deltaY < 2 || deltaX < 2) {
+                    if (yMousePos < viewModel.getCharacterPositionRow())
+                        viewModel.moveCharacter(KeyCode.UP);
+                    if (yMousePos > viewModel.getCharacterPositionRow())
+                        viewModel.moveCharacter(KeyCode.DOWN);
+                    if (xMousePos < viewModel.getCharacterPositionColumn())
+                        viewModel.moveCharacter(KeyCode.LEFT);
+                    if (xMousePos > viewModel.getCharacterPositionColumn())
+                        viewModel.moveCharacter(KeyCode.RIGHT);
+                }
             }
         }
     }
@@ -323,26 +324,27 @@ public class MyViewController implements Observer, IView {
 
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {
-            viewModel.getMaze();
             AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
             double zoomFa;
             if (scrollEvent.isControlDown()) {
-                zoomFa = 1.3;
+                zoomFa = 1.1;
                 double deltaY = scrollEvent.getDeltaY();
                 if (deltaY < 0) {
-                    zoomFa = 1 / zoomFa;
+                    zoomFa = 2.0 - zoomFa;
                 }
+
                 /*
                 pane.setScaleX(pane.getScaleX()*zoomFa);
                 pane.setScaleY(pane.getScaleY()*zoomFa);
                 */
+                // pane.setMinSize();
                 mazeDisplayer.setScaleX(mazeDisplayer.getScaleX()*zoomFa);
                 mazeDisplayer.setScaleY(mazeDisplayer.getScaleY()*zoomFa);
                 playerDisplayer.setScaleX(playerDisplayer.getScaleX()*zoomFa);
                 playerDisplayer.setScaleY(playerDisplayer.getScaleY()*zoomFa);
                 solutionDisplayer.setScaleX(solutionDisplayer.getScaleX()*zoomFa);
                 solutionDisplayer.setScaleY(solutionDisplayer.getScaleY()*zoomFa);
-                scrollEvent.consume();
+                //scrollEvent.consume();
             }
         } catch (NullPointerException e) {
             scrollEvent.consume();

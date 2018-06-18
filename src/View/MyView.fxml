@@ -18,6 +18,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
       <BorderPane fx:id="BRG" onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" onScroll="#zoomInOut" prefHeight="564.0" prefWidth="564.0">
@@ -112,10 +115,21 @@
          <center>
             <StackPane fx:id="pane" prefHeight="527.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                <children>
-                   <SuccessDisplayer fx:id="successDisplayer" height="${pane.height}" width="${pane.width}" />
-                   <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.jpg" width="${pane.width}" />
+                   <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" stroke="BLACK" strokeType="INSIDE"
+                              width="${pane.width}">
+                       <fill>
+                           <LinearGradient endX="1.0" endY="1.0">
+                               <stops>
+                                   <Stop color="#07559e"/>
+                                   <Stop color="#d3dce421" offset="1.0"/>
+                               </stops>
+                           </LinearGradient>
+                       </fill>
+                   </Rectangle>
                    <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" imageFileNameSolutionPath="Resources/Images/path1.jpg" width="${pane.width}" />
                    <MazeDisplayer fx:id="mazeDisplayer" height="${pane.height}" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="${pane.width}" />
+                   <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.jpg" width="${pane.width}" />
+                   <SuccessDisplayer fx:id="successDisplayer" height="${pane.height}" width="${pane.width}" />
                </children>
             </StackPane>
          </center>

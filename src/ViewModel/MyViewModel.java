@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCode;
 import java.util.Observable;
 import java.util.Observer;
 
-public class        MyViewModel extends Observable implements Observer {
+public class MyViewModel extends Observable implements Observer {
 
     private IModel model;
 
@@ -37,14 +37,14 @@ public class        MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         //Platform.runLater(() -> {
-            if (o == model) {
-                characterPositionRowIndex = model.getCharacterPositionRow();
-                characterPositionRow.set(String.valueOf(characterPositionRowIndex));
-                CharacterPositionColumnIndex = model.getCharacterPositionColumn();
-                characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
-                setChanged();
-                notifyObservers(arg);
-            }
+        if (o == model) {
+            characterPositionRowIndex = model.getCharacterPositionRow();
+            characterPositionRow.set(String.valueOf(characterPositionRowIndex));
+            CharacterPositionColumnIndex = model.getCharacterPositionColumn();
+            characterPositionColumn.set(String.valueOf(CharacterPositionColumnIndex));
+            setChanged();
+            notifyObservers(arg);
+        }
         //});
     }
 
@@ -78,10 +78,6 @@ public class        MyViewModel extends Observable implements Observer {
 
     public void moveCharacter(KeyCode movement) {
         model.moveCharacter(movement);
-    }
-
-    public boolean didFinished () {
-        return model.getIfFinish();
     }
 
     public Position getGoalPosition() {

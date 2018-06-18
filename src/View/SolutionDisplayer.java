@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class SolutionDisplayer extends Canvas implements Displayer {
 
-    ArrayList<AState> solutionPath;
+    private ArrayList<AState> solutionPath;
 
     private StringProperty ImageFileNameSolutionPath = new SimpleStringProperty();
 
