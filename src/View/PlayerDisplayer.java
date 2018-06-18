@@ -29,7 +29,7 @@ public class PlayerDisplayer extends Canvas implements Displayer {
                 double canvasWidth = getWidth();
                 double cellHeight = canvasHeight / maze.length;
                 double cellWidth = canvasWidth / maze[0].length;
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellWidth, cellWidth, cellHeight);
+                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
             }
             catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -41,6 +41,13 @@ public class PlayerDisplayer extends Canvas implements Displayer {
         this.characterPositionRow = characterPositionRow;
         this.characterPositionColumn = characterPositionColumn;
         redraw(maze, characterPositionRow, characterPositionColumn);
+    }
+
+    public void ResetZooming(double x,double y)
+    {
+        setScaleX(x);
+        setScaleY(y);
+        redraw();
     }
 
     public StringProperty imageFileNameCharacterProperty() {

@@ -21,6 +21,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.Observable;
@@ -50,8 +51,8 @@ public class MyViewController implements Observer, IView {
     private double originalMazeScaleX;
     private double originalMazeScaleY;
 
-    public StringProperty characterPositionRow = new SimpleStringProperty();
-    public StringProperty characterPositionColumn = new SimpleStringProperty();
+    private StringProperty characterPositionRow = new SimpleStringProperty();
+    private StringProperty characterPositionColumn = new SimpleStringProperty();
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -102,9 +103,9 @@ public class MyViewController implements Observer, IView {
     public void displayPlayer(int[][] maze) {
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
-        playerDisplayer.setPlayer(maze,characterPositionRow,characterPositionColumn);
         this.characterPositionRow.set(String.valueOf(characterPositionRow));
         this.characterPositionColumn.set(String.valueOf(characterPositionColumn));
+        playerDisplayer.setPlayer(maze,characterPositionRow,characterPositionColumn);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class MyViewController implements Observer, IView {
         int width = Integer.valueOf(txtfld_columnsNum.getText());
         btn_generateMaze.setDisable(true);
         if (height <= 0 || width <= 0 || (height == 1 && width == 1)) {
-            showAlert("Wrong input you slimy fuck!", "Generating a 10X10 maze as default instead..");
+            showWrongInputAlert();
             viewModel.generateMaze(10,10);
         }
         else
@@ -131,14 +132,10 @@ public class MyViewController implements Observer, IView {
         originalMazeScaleY = mazeDisplayer.getScaleY();
     }
 
-    public void ResetZoom (){
-        mazeDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
-    }
-
-    private void showAlert(String title, String alertMessage) {
+    private void showWrongInputAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(alertMessage);
+        alert.setTitle("Wrong input you slimy fuck!");
+        alert.setContentText("Generating a 10X10 maze as default instead..");
         alert.show();
     }
 
@@ -266,13 +263,10 @@ public class MyViewController implements Observer, IView {
         } else {
             alertExit.close();
         }
-
     }
 
     public void mouseDragging (MouseEvent me)
     {
-        System.out.println("mouse move");
-
         if (mazeDisplayer != null)
         {
 
@@ -291,7 +285,6 @@ public class MyViewController implements Observer, IView {
                     viewModel.moveCharacter(KeyCode.RIGHT);
             }
         }
-
     }
 
     public String getCharacterPositionRow() {
@@ -327,26 +320,38 @@ public class MyViewController implements Observer, IView {
 
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {
-            viewModel.getMaze();
             AnimatedZoomOperator zoomOp = new AnimatedZoomOperator();
             double zoomFa;
             if (scrollEvent.isControlDown()) {
-                zoomFa = 1.3;
+                zoomFa = 1.1;
                 double deltaY = scrollEvent.getDeltaY();
                 if (deltaY < 0) {
-                    zoomFa = 1 / zoomFa;
+                    zoomFa = 2.0 - zoomFa;
                 }
+
+                /*
+                pane.setScaleX(pane.getScaleX()*zoomFa);
+                pane.setScaleY(pane.getScaleY()*zoomFa);
+                */
+                // pane.setMinSize();
                 mazeDisplayer.setScaleX(mazeDisplayer.getScaleX()*zoomFa);
                 mazeDisplayer.setScaleY(mazeDisplayer.getScaleY()*zoomFa);
                 playerDisplayer.setScaleX(playerDisplayer.getScaleX()*zoomFa);
                 playerDisplayer.setScaleY(playerDisplayer.getScaleY()*zoomFa);
                 solutionDisplayer.setScaleX(solutionDisplayer.getScaleX()*zoomFa);
                 solutionDisplayer.setScaleY(solutionDisplayer.getScaleY()*zoomFa);
-                scrollEvent.consume();
+                //scrollEvent.consume();
             }
         } catch (NullPointerException e) {
             scrollEvent.consume();
         }
+    }
+
+    public void ResetZoom (){
+        mazeDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
+        if(solved)
+            solutionDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
+        playerDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
     }
 
     public void Properties(ActionEvent actionEvent) {
