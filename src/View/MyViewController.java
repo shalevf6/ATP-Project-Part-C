@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -55,8 +56,6 @@ public class MyViewController implements Observer, IView {
     private double originalMazeScaleY;
     private double mazeDisX;
     private double mazeDisY;
-    private double originalMazeScaleX;
-    private double originalMazeScaleY;
     public static MediaPlayer player;
     public static Media song;
 
