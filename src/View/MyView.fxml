@@ -21,7 +21,7 @@
 <?import View.SuccessDisplayer?>
 <StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane fx:id="BRG" onKeyPressed="#KeyPressed" onMouseDragged="#mouseDragging" onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane onKeyPressed="#KeyPressed"  onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
@@ -119,7 +119,7 @@
                    <SuccessDisplayer fx:id="successDisplayer" height="${pane.height}" width="${pane.width}" />
                    <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" width="${pane.width}" imageFileNameCharacter="Resources/Images/character1.jpg" />
                    <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" width="${pane.width}" imageFileNameSolutionPath="Resources/Images/path1.jpg" />
-                   <MazeDisplayer fx:id="mazeDisplayer" height="${pane.height}" width="${pane.width}" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" />
+                   <MazeDisplayer fx:id="mazeDisplayer" onMouseDragged="#mouseDragging" height="${pane.height}" width="${pane.width}" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" />
                </children>
             </StackPane>
          </center>
