@@ -180,20 +180,17 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-
                 mazeDisX = newSceneWidth.doubleValue() - borP.getLeft().getLayoutBounds().getWidth();
-                borP.setPrefWidth(newSceneWidth.doubleValue());
-                pane.setMaxSize(mazeDisX,mazeDisY);
-                mazeDisplayer.redraw();
+                mazeDisplayer.setMaze(viewModel.getMaze(),viewModel.getStartPosition(),viewModel.getGoalPosition());
+                playerDisplayer.setPlayer(viewModel.getMaze(),viewModel.getCharacterPositionRow(),viewModel.getCharacterPositionColumn());
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 mazeDisY = newSceneHeight.doubleValue();
-                borP.setPrefHeight(mazeDisY - borP.getTop().getLayoutBounds().getHeight());
-                mazeDisplayer.setLayoutY(mazeDisY - pane.getScaleY());
-                mazeDisplayer.redraw();
+                mazeDisplayer.setMaze(viewModel.getMaze(),viewModel.getStartPosition(),viewModel.getGoalPosition());
+                playerDisplayer.setPlayer(viewModel.getMaze(),viewModel.getCharacterPositionRow(),viewModel.getCharacterPositionColumn());
             }
         });
     }
