@@ -7,24 +7,23 @@ import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import View.Main;
-import View.MyViewController;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Observable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+/**
+ * This class represents the Model of the game
+ */
 
 public class MyModel extends Observable implements IModel {
 
-    // private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private int characterPositionRow;
@@ -34,6 +33,10 @@ public class MyModel extends Observable implements IModel {
 
     private Maze maze;
 
+    /**
+     * The constructor for MyModel
+     * Creates a new maze generating server and a new search problem solving server
+     */
     public MyModel() {
         // Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
@@ -41,12 +44,18 @@ public class MyModel extends Observable implements IModel {
         didWeSolve = false;
     }
 
+    /**
+     * Starts the maze generating and search problem solving servers
+     */
     public void startServers() {
         mazeGeneratingServer.start();
         solveSearchProblemServer.start();
     }
 
-    public void stopServers() {
+    /**
+     * Stops the maze generating and search problem solving servers
+     */
+    private void stopServers() {
         mazeGeneratingServer.stop();
         solveSearchProblemServer.stop();
     }
@@ -74,6 +83,11 @@ public class MyModel extends Observable implements IModel {
         //});
     }
 
+    /**
+     * Generates a random maze through the maze generating server
+     * @param width - the maze's width
+     * @param height - the maze's height
+     */
     private void generateRandomMaze(int width, int height) {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
@@ -102,6 +116,9 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
+    /**
+     * Solving a search problem given the model's current maze through the search problem solving server
+     */
     private void solveMazeSearchProblem() {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5401, new IClientStrategy() {
@@ -149,8 +166,6 @@ public class MyModel extends Observable implements IModel {
                             !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
                         characterPositionColumn--;
                     break;
-
-
                 case UP:
                     if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn)) &&
                             !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn)))
@@ -171,8 +186,6 @@ public class MyModel extends Observable implements IModel {
                             !maze.isPositionAWall(new Position(characterPositionRow, characterPositionColumn - 1)))
                         characterPositionColumn--;
                     break;
-
-
                 case NUMPAD7:
                     if (maze.isPositionInMaze(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
                             !maze.isPositionAWall(new Position(characterPositionRow - 1, characterPositionColumn - 1)) &&
@@ -217,7 +230,7 @@ public class MyModel extends Observable implements IModel {
         notifyObservers(didWeSolve ? "PlayerDisplayer, SUCCESS" : "PlayerDisplayer");
     }
 
-
+    @Override
     public boolean load()
     {
         FileChooser fc = new FileChooser();
@@ -236,7 +249,7 @@ public class MyModel extends Observable implements IModel {
                 didWeSolve = false;
 
                 setChanged();
-                notifyObservers("MazeDisplayer, SolutionDisplayer, PlayerDisplayer");
+                notifyObservers("MazeDisplayer, PlayerDisplayer");
                 return true;
 
             }
@@ -251,6 +264,7 @@ public class MyModel extends Observable implements IModel {
         return false;
     }
 
+    @Override
     public void exit() {
         stopServers();
         // threadPool.shutdown();
@@ -295,10 +309,10 @@ public class MyModel extends Observable implements IModel {
         }
 
     @Override
-    public void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_thredes) {
-        int Thredes=Integer.parseInt(num_of_thredes);
+    public void ChangeProperties(String chosenAlgo, String chosenMaze, String num_of_threads) {
+        int Thredes=Integer.parseInt(num_of_threads);
         boolean GoodInput = true;
-        if(Thredes<=0 || chosenAlgo==null||chosenMaze==null||num_of_thredes==null){
+        if(Thredes<=0 || chosenAlgo==null||chosenMaze==null||num_of_threads==null){
             GoodInput=false;
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText("Bad Input  :(\n Please try again!");
@@ -308,15 +322,12 @@ public class MyModel extends Observable implements IModel {
             try {
 
                 File file = new File("./Resources/config.properties");
-                String first = new String("searchingAlgorithm=" + chosenAlgo+"\n");
-                String second = new String("mazeGenerator=" + chosenMaze+"\n");
-                String third = new String("threadPoolSize=" + num_of_thredes);
+                String first = "searchingAlgorithm=" + chosenAlgo + "\n";
+                String second = "mazeGenerator=" + chosenMaze + "\n";
+                String third = "threadPoolSize=" + num_of_threads;
                 // if file doesnt exists, then create it
-                if (!file.exists()) {
+                if (!file.exists())
                     file.createNewFile();
-                } else {
-
-                }
 
                 FileWriter fw = new FileWriter(file.getAbsoluteFile());
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -347,6 +358,7 @@ public class MyModel extends Observable implements IModel {
         return characterPositionColumn;
     }
 
+    @Override
     public Position getGoalPosition() {
         return maze.getGoalPosition();
     }

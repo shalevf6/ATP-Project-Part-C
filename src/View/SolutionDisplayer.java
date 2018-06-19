@@ -1,6 +1,5 @@
 package View;
 
-import algorithms.mazeGenerators.Maze;
 import algorithms.search.AState;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
@@ -9,11 +8,13 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+/**
+ * This class represents a Solution displayer canvas
+ */
 public class SolutionDisplayer extends Canvas implements Displayer {
 
     private ArrayList<AState> solutionPath;
@@ -44,11 +45,17 @@ public class SolutionDisplayer extends Canvas implements Displayer {
         }
     }
 
+    /**
+     * ets the array representing the maze and the path of the solution of the maze
+     * @param maze - the array representing the maze
+     * @param solution - the path of the solution of the maze
+     */
     public void setSolution(int[][] maze,Solution solution) {
         this.solutionPath = solution.getSolutionPath();
         redraw(maze, solution);
     }
 
+    @Override
     public void ResetZooming(double x,double y)
     {
         setScaleX(x);

@@ -28,10 +28,10 @@ public class Main extends Application {
         MyViewModel viewModel = new MyViewModel(model);
         model.addObserver(viewModel);
 
-        primaryStage.setTitle("Oh my sweet, sweet tit-licking son of Mary and Joseph. back the fun bus the fuck up. That's a MAZE!");
+        primaryStage.setTitle("God Of War Maze");
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1350, 900);
         scene.getStylesheets().add(getClass().getResource("MyViewStyle.css").toExternalForm());
         primaryStage.setScene(scene);
 

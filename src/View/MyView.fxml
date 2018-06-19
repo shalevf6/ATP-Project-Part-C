@@ -70,8 +70,8 @@
                          <children>
                              <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                              <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                             <TextField fx:id="txtfld_rowsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                             <TextField fx:id="txtfld_columnsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                             <TextField fx:id="txtfld_rowsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                             <TextField fx:id="txtfld_columnsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                              <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                              <Button fx:id="btn_solveMaze" cancelButton="true" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                              <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
@@ -92,9 +92,9 @@
          <center>
             <StackPane fx:id="pane" prefHeight="527.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                 <children>
-                    <MazeDisplayer fx:id="mazeDisplayer" height="${pane.height}" imageFileNameGoal="Resources/Images/goal1.jpg" imageFileNameStart="Resources/Images/start1.jpg" imageFileNameWall="Resources/Images/wall3.jpg" width="${pane.width}" />
-                    <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.jpg" width="${pane.width}" />
-                    <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" imageFileNameSolutionPath="Resources/Images/path1.jpg" width="${pane.width}" />
+                    <MazeDisplayer fx:id="mazeDisplayer" height="${pane.height}" imageFileNameGoal="Resources/Images/goal1.png" imageFileNameStart="Resources/Images/start1.png" imageFileNameWall="Resources/Images/wall1.png" width="${pane.width}" />
+                    <PlayerDisplayer fx:id="playerDisplayer" height="${pane.height}" imageFileNameCharacter="Resources/Images/character1.png" width="${pane.width}" />
+                    <SolutionDisplayer fx:id="solutionDisplayer" height="${pane.height}" imageFileNameSolutionPath="Resources/Images/path1.png" width="${pane.width}" />
                     <SuccessDisplayer fx:id="successDisplayer" height="${pane.height}" width="${pane.width}" />
                 </children>
             </StackPane>

@@ -1,15 +1,16 @@
 package View;
 
-import algorithms.mazeGenerators.Maze;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * This class represents a Player displayer canvas
+ */
 public class PlayerDisplayer extends Canvas implements Displayer {
 
     private int characterPositionRow = 0;
@@ -37,21 +38,24 @@ public class PlayerDisplayer extends Canvas implements Displayer {
         }
     }
 
+    /**
+     * Sets the array representing the maze, the character's row Position and the character's column Position
+     * @param maze - the array representing the maze
+     * @param characterPositionRow - the character's row Position
+     * @param characterPositionColumn - the character's column Position
+     */
     public void setPlayer(int[][] maze, int characterPositionRow, int characterPositionColumn) {
         this.characterPositionRow = characterPositionRow;
         this.characterPositionColumn = characterPositionColumn;
         redraw(maze, characterPositionRow, characterPositionColumn);
     }
 
+    @Override
     public void ResetZooming(double x,double y)
     {
         setScaleX(x);
         setScaleY(y);
         redraw();
-    }
-
-    public StringProperty imageFileNameCharacterProperty() {
-        return ImageFileNameCharacter;
     }
 
     public String getImageFileNameCharacter() {

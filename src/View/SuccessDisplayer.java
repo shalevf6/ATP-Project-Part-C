@@ -10,11 +10,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
+import javafx.stage.WindowEvent;
 import java.io.FileInputStream;
 
+/**
+ * This class represents a Success displayer canvas
+ */
 public class SuccessDisplayer extends Canvas implements Displayer {
 
+    @Override
     public void redraw(Object... objects) {
         if (objects.length ==1 && objects[0] instanceof MyViewController) {
             MyViewController mvc = (MyViewController)objects[0];
@@ -23,7 +27,7 @@ public class SuccessDisplayer extends Canvas implements Displayer {
             gc.clearRect(0, 0, getWidth(), getHeight());
 
             try {
-                String path = System.getProperty("user.dir") + "\\Resources\\images\\" + "success.jpg";
+                String path = System.getProperty("user.dir") + "\\Resources\\images\\" + "success.gif";
 
                 Image win = new Image(new FileInputStream(path));
                 ImageView winGif = new ImageView();
@@ -37,6 +41,14 @@ public class SuccessDisplayer extends Canvas implements Displayer {
                 Stage newStage = new Stage();
                 newStage.setTitle("Success!");
                 newStage.setScene(scene);
+                newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        MyViewController.successPlayer.stop();
+                        newStage.close();
+                        mvc.SetStageNewEvent(new ActionEvent());
+                    }
+                });
 
                 Button button = new Button();
                 button.setText("New Game");
@@ -45,22 +57,20 @@ public class SuccessDisplayer extends Canvas implements Displayer {
                     public void handle(ActionEvent event) {
                         newStage.close();
                         mvc.SetStageNewEvent(event);
-
                     }
                 });
 
                 winGif.setImage(win);
                 pane.getChildren().addAll(winGif, button);
                 newStage.initOwner(Main.pStage);
-
                 newStage.showAndWait();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    @Override
     public void ResetZooming(double x,double y)
     {
         setScaleX(x);
