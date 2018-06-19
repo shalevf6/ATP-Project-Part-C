@@ -43,7 +43,6 @@ public class MazeDisplayer extends Canvas implements Displayer {
                 for (int i = 0; i < maze.length; i++) {
                     for (int j = 0; j < maze[i].length; j++) {
                         if (maze[i][j] == 1) {
-                            // gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                             gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                         }
                     }

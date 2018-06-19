@@ -54,6 +54,7 @@ public class Main extends Application {
                 alertExit.setContentText("Are you really really really sure you want to exit??");
                 Optional<ButtonType> result = alertExit.showAndWait();
                 if (result.get() == Exitbtn) {
+                    Platform.exit();
                     // ... user chose OK
                     // Close program
                 } else

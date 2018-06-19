@@ -24,7 +24,7 @@ public class MyViewModel extends Observable implements Observer {
     /**
      * The constructor for MyViewModel
      * Sets a given model as its model
-     * @param model
+     * @param model - a given Model
      */
     public MyViewModel(IModel model) {
         this.model = model;
