@@ -37,6 +37,11 @@ Button:hover{
     -fx-font-weight: bold;
 }
 
+#pane {
+    -fx-background-image: url("backgrounds/background2.jpg");
+    -fx-background-size: cover;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
 .stackPane {
     -fx-border-color: black ;
     -fx-background-color: #86c1b9;

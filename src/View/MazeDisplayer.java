@@ -1,43 +1,29 @@
 package View;
 
-import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
+/**
+ * This class represents a Maze displayer canvas
+ */
 public class MazeDisplayer extends Canvas implements Displayer {
 
     private int[][] maze;
     private Position goalPosition;
     private Position startPosition;
-    //region Properties
 
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameGoal = new SimpleStringProperty();
     private StringProperty ImageFileNameStart = new SimpleStringProperty();
 
-    public void setMaze(int[][] maze, Position startPosition, Position goalPosition) {
-        this.maze = maze;
-        this.startPosition = startPosition;
-        this.goalPosition = goalPosition;
-        redraw();
-    }
-
+    @Override
     public void redraw(Object... objects) {
         if (maze != null) {
             double canvasHeight = getHeight();
@@ -53,7 +39,7 @@ public class MazeDisplayer extends Canvas implements Displayer {
                 GraphicsContext gc = getGraphicsContext2D();
                 gc.clearRect(0, 0, getWidth(), getHeight());
 
-                //Draw Maze
+                //Draws Maze
                 for (int i = 0; i < maze.length; i++) {
                     for (int j = 0; j < maze[i].length; j++) {
                         if (maze[i][j] == 1) {
@@ -69,7 +55,8 @@ public class MazeDisplayer extends Canvas implements Displayer {
                 gc.fillRect(0,0,getWidth(),frameThickness);
                 gc.fillRect(getWidth() - frameThickness,0,frameThickness,getHeight());
                 gc.fillRect(0,getHeight() - frameThickness,getWidth(),frameThickness);
-                //Draw Start & Goal Positions
+
+                //Draws Start & Goal Positions
                 gc.drawImage(goalImage, goalPosition.getColumnIndex() * cellWidth, goalPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
                 gc.drawImage(startImage, startPosition.getColumnIndex() * cellWidth, startPosition.getRowIndex() * cellHeight, cellWidth, cellHeight);
             } catch (FileNotFoundException e) {
@@ -78,6 +65,21 @@ public class MazeDisplayer extends Canvas implements Displayer {
         }
     }
 
+    /**
+     * Sets the array representing the maze, the maze's start position and the maze's goal position
+     * and then redraws them on the canvas
+     * @param maze - the array representing the maze
+     * @param startPosition - the maze's start position
+     * @param goalPosition - the maze's goal position
+     */
+    public void setMaze(int[][] maze, Position startPosition, Position goalPosition) {
+        this.maze = maze;
+        this.startPosition = startPosition;
+        this.goalPosition = goalPosition;
+        redraw();
+    }
+
+    @Override
     public void ResetZooming(double x,double y)
     {
         setScaleX(x);
@@ -108,5 +110,4 @@ public class MazeDisplayer extends Canvas implements Displayer {
     public void setImageFileNameStart(String imageFileNameStart) {
         this.ImageFileNameStart.set(imageFileNameStart);
     }
-
 }

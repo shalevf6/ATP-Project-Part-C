@@ -15,24 +15,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 
+/**
+ * Represents the View of the Game
+ */
 public class MyViewController implements Observer, IView {
 
     public StackPane pane;
-    private MyViewModel viewModel;
-    private boolean solved = false;
     public MazeDisplayer mazeDisplayer;
     public SolutionDisplayer solutionDisplayer;
     public PlayerDisplayer playerDisplayer;
@@ -49,22 +46,38 @@ public class MyViewController implements Observer, IView {
     public BorderPane borP;
     public StackPane ST;
     public VBox leftM;
+
+    private MyViewModel viewModel;
+    private boolean solved = false;
+    private boolean firstMazeCreated = false;
     private double originalMazeScaleX;
     private double originalMazeScaleY;
     private double mazeDisX;
     private double mazeDisY;
-    public static MediaPlayer player;
-    public static Media song;
+    private static Media gameSong = new Media(new File("./Resources/music/gameSong.mpeg").toURI().toString());
+    private static Media successSong = new Media(new File("./Resources/music/successSong.mpeg").toURI().toString());
+    private static MediaPlayer gamePlayer = new MediaPlayer(gameSong);
+    public static MediaPlayer successPlayer = new MediaPlayer(successSong);
 
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
 
-
+    /**
+     * Sets a given ViewModel to this View, binds the properties of the Character's position labels to the actual position
+     * on the maze and sets the volume of the success and inGame players
+     * @param viewModel - a given ViewModel
+     */
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
         bindProperties(viewModel);
+        gamePlayer.setVolume(1);
+        successPlayer.setVolume(1);
     }
 
+    /**
+     * Binds the properties of the Character's position labels to the actual position on the maze
+     * @param viewModel - a given ViewModel
+     */
     private void bindProperties(MyViewModel viewModel) {
         lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
         lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
@@ -74,49 +87,34 @@ public class MyViewController implements Observer, IView {
     @Override
     public void update(Observable o, Object arg) {
         String displayer = (String) arg;
-        //Platform.runLater(() -> {
+        // Displays the Maze
         if (o == viewModel && displayer.contains("MazeDisplayer")) {
             displayMaze(viewModel.getMaze());
-            btn_generateMaze.setDisable(true);
             btn_solveMaze.setDisable(false);
             btn_Pause.setDisable(false);
             btn_Play.setDisable(true);
-            setSong("./Resources/music/startSong.mp3","start");
         }
 
+        // Displays the Solution
         if (o == viewModel && displayer.contains("SolutionDisplayer") && !displayer.contains("SUCCESS")) {
             GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
             gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
             displaySolution(viewModel.getMaze());
         }
         else
-        if (o == viewModel && displayer.contains("PlayerDisplayer"))
-            displayPlayer(viewModel.getMaze());
+            // Displays the player
+            if (o == viewModel && displayer.contains("PlayerDisplayer"))
+                displayPlayer(viewModel.getMaze());
 
+        // Displays the Success window
         if (o == viewModel && displayer.contains("SUCCESS")) {
             // implement success scenario
             solved = true;
             GraphicsContext gc = playerDisplayer.getGraphicsContext2D();
-            player.pause();
             gc.clearRect(0,0,playerDisplayer.getWidth(),playerDisplayer.getHeight());
-            setSong("./Resources/music/successSong.mp3","success");
+            gamePlayer.pause();
+            successPlayer.play();
             successDisplayer.redraw(this);
-        }
-        //});
-    }
-
-    private void setSong(String path, String songPhase) {
-        String absolutePath = new File(path).getAbsolutePath();
-        if(songPhase.equals("success")) {
-            song = new Media(new File(absolutePath).toURI().toString());
-            player = new MediaPlayer(song);
-            player.setVolume(0.7);
-            player.play();
-        }
-        if(songPhase.equals("start")) {
-            song = new Media(new File(absolutePath).toURI().toString());
-            player = new MediaPlayer(song);
-            player.setVolume(0.5);
         }
     }
 
@@ -140,8 +138,12 @@ public class MyViewController implements Observer, IView {
         mazeDisplayer.setMaze(maze, viewModel.getStartPosition(), viewModel.getGoalPosition());
     }
 
+    /**
+     * Generates a new Maze. if the given row and column numbers are ilegal, generates a 10X10 maze instead
+     */
     public void generateMaze() {
-
+        if(!firstMazeCreated)
+            firstMazeCreated = true;
         solved = false;
         GraphicsContext gc = solutionDisplayer.getGraphicsContext2D();
         gc.clearRect(0,0,solutionDisplayer.getWidth(),solutionDisplayer.getHeight());
@@ -162,6 +164,9 @@ public class MyViewController implements Observer, IView {
         btn_Pause.setDisable(true);
     }
 
+    /**
+     * Raising a wrong input alert
+     */
     private void showWrongInputAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Wrong input you slimy fuck!");
@@ -169,6 +174,10 @@ public class MyViewController implements Observer, IView {
         alert.show();
     }
 
+    /**
+     * Handles a KeyEvent by moving it to the ViewModel
+     * @param keyEvent - a given KeyEvent
+     */
     public void KeyPressed(KeyEvent keyEvent) {
         if (!solved) {
             viewModel.moveCharacter(keyEvent.getCode());
@@ -176,6 +185,10 @@ public class MyViewController implements Observer, IView {
         }
     }
 
+    /**
+     * Handles Resizing event to a given scene
+     * @param scene - a given scene
+     */
     public void setResizeEvent(Scene scene) {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -195,20 +208,26 @@ public class MyViewController implements Observer, IView {
         });
     }
 
+    /**
+     * Raising the about window when "about" is pushed
+     * @param actionEvent - the event raised when "about" is pushed
+     */
     public void About(ActionEvent actionEvent) {
         Stage stage = new Stage();
+        stage.setWidth(435);
+        stage.setHeight(165);
         stage.setTitle("About this Game");
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-        Label firstLine = new Label("This game created by the three magnificent individuals that tried to");
+        Label firstLine = new Label("This game was created by three magnificent individuals that");
         GridPane.setConstraints(firstLine, 0, 0);
-        Label secondLine = new Label("find out the purpose of life and found it by solving this game at the");
+        Label secondLine = new Label(" tried to find out the purpose of life and found it by solving");
         GridPane.setConstraints(secondLine, 0, 1);
-        Label thiredLable = new Label("best time they could find! now is you're time");
+        Label thiredLable = new Label(" this maze! now it's you're time to shine and solve it as well.");
         GridPane.setConstraints(thiredLable, 0, 2);
-        Label forthLable = new Label("to shine and solve it as well, Good luck!");
+        Label forthLable = new Label("Good luck!");
         GridPane.setConstraints(forthLable, 0, 3);
         grid.getChildren().addAll(firstLine, secondLine, thiredLable, forthLable);
         Scene scene = new Scene(grid, 445, 130);
@@ -218,38 +237,55 @@ public class MyViewController implements Observer, IView {
         stage.show();
     }
 
+    /**
+     * Raising the game rules window when "game rules" is pushed
+     * @param actionEvent - the event raised when "game rules" is pushed
+     */
     public void GameRules(ActionEvent actionEvent){
         Stage stage = new Stage();
+        stage.setWidth(490);
+        stage.setHeight(195);
         stage.setTitle("Game Rules");
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-        Label firstLine = new Label("In this game,the player Starts from the Start Point");
+        Label firstLine = new Label("You are Kratos, a respected soldier and General that would ascend");
         GridPane.setConstraints(firstLine, 0, 0);
-        Label secondLine = new Label("and his goal is to get to Goal Point as quick as he");
+        Label secondLine = new Label(" to Godhood before exacting revenge against the Olympians who");
         GridPane.setConstraints(secondLine, 0, 1);
-        Label thiredLable = new Label("can...Good luck!");
+        Label thiredLable = new Label(" betrayed him. In order to achieve that, you must reach Zeus while");
         GridPane.setConstraints(thiredLable, 0, 2);
-        grid.getChildren().addAll(firstLine, secondLine, thiredLable);
-        Scene scene = new Scene(grid, 335, 115);
+        Label fourthLabel = new Label("avoiding Meduza, Queen of the Gorgons. Can you help Kratos achieve");
+        GridPane.setConstraints(fourthLabel, 0, 3);
+        Label fifthhLabel = new Label("his goal?");
+        GridPane.setConstraints(fifthhLabel, 0, 4);
+        grid.getChildren().addAll(firstLine, secondLine, thiredLable, fourthLabel, fifthhLabel);
+        Scene scene = new Scene(grid, 335, 140);
         scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
 
         stage.setScene(scene);
         stage.show();
     }
 
-
+    /**
+     * Exits the game window when "exit" is pushed
+     * @param actionEvent - the event raised when "exit" is pushed
+     */
     public void Exit(ActionEvent actionEvent) {
-        MyViewController.player.stop();
+        successPlayer.stop();
+        gamePlayer.pause();
         exitProject();
     }
 
+    /**
+     * Pops a Window which asks if you want to start a new game when "new" is pushed
+     * @param actionEvent - the event raised when "new" is pushed
+     */
     public void SetStageNewEvent(ActionEvent actionEvent) {
         if (solved) {
             solved = false;
-            if (player != null)
-                player.pause();
+            successPlayer.stop();
         }
         Alert alertExit = new Alert(Alert.AlertType.NONE);
         ButtonType newGame = new ButtonType(" Hell yeah! Start fresh", ButtonBar.ButtonData.YES);
@@ -265,7 +301,10 @@ public class MyViewController implements Observer, IView {
         }
     }
 
-    public void exitProject() {
+    /**
+     * Makes sure the user realy wants to exit and exits if that's the case
+     */
+    private void exitProject() {
         Alert alertExit = new Alert(Alert.AlertType.NONE);
         ButtonType Exitbtn = new ButtonType("Exit For Life", ButtonBar.ButtonData.YES);
         ButtonType NoExitbtn = new ButtonType("Stay Here Forever", ButtonBar.ButtonData.NO);
@@ -274,7 +313,6 @@ public class MyViewController implements Observer, IView {
         alertExit.setContentText("Are you really really really sure you want to exit??");
         Optional<ButtonType> result = alertExit.showAndWait();
         if (result.get() == Exitbtn){
-            MyViewController.player.stop();
             viewModel.closeModel();
             Platform.exit();
         } else {
@@ -282,6 +320,10 @@ public class MyViewController implements Observer, IView {
         }
     }
 
+    /**
+     * Moving the player through mouse dragging
+     * @param me - the event raised when the player is being dragged by the mouse
+     */
     public void mouseDragging (MouseEvent me)
     {
         if (mazeDisplayer != null)
@@ -303,39 +345,34 @@ public class MyViewController implements Observer, IView {
         }
     }
 
-    public String getCharacterPositionRow() {
-        return characterPositionRow.get();
-    }
-
-    public StringProperty getCharacterPositionRowProperty() {
-        return characterPositionRow;
-    }
-
-    public String getCharacterPositionColumn() {
-        return characterPositionColumn.get();
-    }
-
-    public StringProperty getCharacterPositionColumnProperty() {
-        return characterPositionColumn;
-    }
-
+    /**
+     * Loads a new game when "load" is pushed
+     * @param actionEvent - the event raised when "load" is pushed
+     */
     public void loadGame(ActionEvent actionEvent) {
         if (viewModel.load()) {
             btn_solveMaze.setDisable(false);
-            if (solved)
+            if (solved) {
                 solved = false;
-            if (player != null)
-                player.pause();
+                successPlayer.stop();
+            }
         }
         actionEvent.consume();
     }
 
+    /**
+     * Solves the current maze when "sSolve Maze" is pushed
+     * @param actionEvent - the event raised when "Solve Maze" is pushed
+     */
     public void solveMaze(ActionEvent actionEvent) {
         showSolveAlert();
         solved = true;
         viewModel.solveMaze();
     }
 
+    /**
+     * Pops up an alert when the user clicks on "Solve Maze"
+     */
     private void showSolveAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Please wait patiently");
@@ -343,10 +380,31 @@ public class MyViewController implements Observer, IView {
         alert.show();
     }
 
+    /**
+     * Saves the current Maze when the user clicks on "save"
+     */
     public void SaveGame(){
-        viewModel.saveGame();
+        if(firstMazeCreated)
+            viewModel.saveGame();
+        else {
+            showSaveAlert();
+        }
     }
 
+    /**
+     * Pops up an alert when the user clicks on "save" and there was no maze generated beforehand
+     */
+    private void showSaveAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Pay Attention");
+        alert.setContentText("You haven't generated a maze to save yet!");
+        alert.show();
+    }
+
+    /**
+     * Handles Zooming in and out of the game's window
+     * @param scrollEvent - the event raised when the user is Zooming in and out of the game's window
+     */
     public void zoomInOut(ScrollEvent scrollEvent) {
         try {
             double zoomFa;
@@ -369,6 +427,9 @@ public class MyViewController implements Observer, IView {
         }
     }
 
+    /**
+     * Resets the zoom to the initial default when the user clicks on "reset zoom"
+     */
     public void ResetZoom (){
         mazeDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
         if(solved)
@@ -376,6 +437,10 @@ public class MyViewController implements Observer, IView {
         playerDisplayer.ResetZooming(originalMazeScaleX,originalMazeScaleY);
     }
 
+    /**
+     * Opens and changes the properties when the user clicks on "properties"
+     * @param actionEvent - the event raised when the user clicks on "properties"
+     */
     public void Properties(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
@@ -411,6 +476,13 @@ public class MyViewController implements Observer, IView {
         }
     }
 
+    /**
+     * Gets the user's choices of properties after he clicked on "properties"
+     * @param algo - the user's choice for a searching problem solving algorithm
+     * @param mazeType - the user's choice for a maze generating algorithm
+     * @param num_of_thredes - the user's choice for the number of thread the Servers will run with
+     * @param stage - the properties' window
+     */
     private void getChoice(ChoiceBox<String> algo, ChoiceBox<String> mazeType, TextField num_of_thredes ,Stage stage) {
         String ChosenAlgo = algo.getValue();
         String ChosenMaze = mazeType.getValue();
@@ -419,16 +491,40 @@ public class MyViewController implements Observer, IView {
         stage.close();
     }
 
+    /**
+     * Plays the inGame's music when "Play Music" is pushed
+     * @param actionEvent - the event raised when "Play Music" is pushed
+     */
     public void PlayMusic(ActionEvent actionEvent) {
-        player.play();
+        successPlayer.stop();
+        gamePlayer.play();
         btn_Play.setDisable(true);
         btn_Pause.setDisable(false);
     }
 
+    /**
+     * Pauses the inGame's music when "Pause" is pushed
+     * @param actionEvent - the event raised when "Pause" is pushed
+     */
     public void Pause(ActionEvent actionEvent) {
-
-        player.pause();
+        gamePlayer.pause();
         btn_Play.setDisable(false);
         btn_Pause.setDisable(true);
+    }
+
+    public String getCharacterPositionRow() {
+        return characterPositionRow.get();
+    }
+
+    public StringProperty getCharacterPositionRowProperty() {
+        return characterPositionRow;
+    }
+
+    public String getCharacterPositionColumn() {
+        return characterPositionColumn.get();
+    }
+
+    public StringProperty getCharacterPositionColumnProperty() {
+        return characterPositionColumn;
     }
 }
