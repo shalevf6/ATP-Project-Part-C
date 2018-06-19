@@ -9,7 +9,7 @@
 <?import View.SuccessDisplayer?>
 <StackPane fx:id="ST" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
-      <BorderPane fx:id="borP" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
+      <BorderPane fx:id="borP" onMouseDragged="#mouseDragging" onKeyPressed="#KeyPressed" onScroll="#zoomInOut" prefHeight="456.0" prefWidth="564.0">
          <top>
              <VBox BorderPane.alignment="CENTER">
                  <children>
