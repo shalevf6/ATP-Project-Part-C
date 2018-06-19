@@ -343,6 +343,26 @@ public class MyViewController implements Observer, IView {
                     viewModel.moveCharacter(KeyCode.RIGHT);
             }
         }
+        /*
+        if (mazeDisplayer != null)
+        {
+            double xMousePos = me.getX() / playerDisplayer.getWidth();
+            double yMousePos = me.getY() / playerDisplayer.getHeight();
+
+            if (!solved && (Math.abs(viewModel.getCharacterPositionRow() - xMousePos) < 2) ||
+                    Math.abs(viewModel.getCharacterPositionColumn() - yMousePos) < 2)
+            {
+                if (yMousePos < viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.UP);
+                if (yMousePos > viewModel.getCharacterPositionRow())
+                    viewModel.moveCharacter(KeyCode.DOWN);
+                if (xMousePos < viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.LEFT);
+                if (xMousePos > viewModel.getCharacterPositionColumn())
+                    viewModel.moveCharacter(KeyCode.RIGHT);
+            }
+        }
+        */
     }
 
     /**
