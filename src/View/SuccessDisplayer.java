@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 
 public class SuccessDisplayer extends Canvas implements Displayer {
 
-    @Override
     public void redraw(Object... objects) {
         if (objects.length ==1 && objects[0] instanceof MyViewController) {
             MyViewController mvc = (MyViewController)objects[0];
@@ -34,6 +33,7 @@ public class SuccessDisplayer extends Canvas implements Displayer {
 
                 Pane pane = new Pane();
                 Scene scene = new Scene(pane, getWidth(), getHeight());
+                scene.getStylesheets().add(getClass().getResource("IdanView.css").toExternalForm());
                 Stage newStage = new Stage();
                 newStage.setTitle("Success!");
                 newStage.setScene(scene);
@@ -45,6 +45,7 @@ public class SuccessDisplayer extends Canvas implements Displayer {
                     public void handle(ActionEvent event) {
                         newStage.close();
                         mvc.SetStageNewEvent(event);
+
                     }
                 });
 

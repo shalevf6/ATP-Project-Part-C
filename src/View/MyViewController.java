@@ -7,9 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -23,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -45,10 +42,10 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
+    public javafx.scene.control.Button btn_Play;
+    public javafx.scene.control.Button btn_Pause;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Button btn_ResetZoom;
-    public javafx.scene.control.Button btn_save_comfermed;
-    private TextField textField_to_save;
     public BorderPane borP;
     public StackPane ST;
     public VBox leftM;
@@ -62,6 +59,7 @@ public class MyViewController implements Observer, IView {
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
 
+
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
         bindProperties(viewModel);
@@ -70,6 +68,7 @@ public class MyViewController implements Observer, IView {
     private void bindProperties(MyViewModel viewModel) {
         lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
         lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
+
     }
 
     @Override
@@ -80,6 +79,9 @@ public class MyViewController implements Observer, IView {
             displayMaze(viewModel.getMaze());
             btn_generateMaze.setDisable(true);
             btn_solveMaze.setDisable(false);
+            btn_Pause.setDisable(false);
+            btn_Play.setDisable(true);
+            setSong("./Resources/music/startSong.mp3","start");
         }
 
         if (o == viewModel && displayer.contains("SolutionDisplayer") && !displayer.contains("SUCCESS")) {
@@ -139,10 +141,7 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
-        if (player != null)
-            player.pause();
-        setSong("./Resources/music/startSong.mp3","start");
-        player.play();
+
         solved = false;
         GraphicsContext gc = solutionDisplayer.getGraphicsContext2D();
         gc.clearRect(0,0,solutionDisplayer.getWidth(),solutionDisplayer.getHeight());
@@ -159,6 +158,8 @@ public class MyViewController implements Observer, IView {
         btn_solveMaze.setDisable(false);
         originalMazeScaleX = mazeDisplayer.getScaleX();
         originalMazeScaleY = mazeDisplayer.getScaleY();
+        btn_Play.setDisable(false);
+        btn_Pause.setDisable(true);
     }
 
     private void showWrongInputAlert() {
@@ -241,20 +242,6 @@ public class MyViewController implements Observer, IView {
         stage.show();
     }
 
-    public void GameRules1(ActionEvent actionEvent) {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("GameRulesController");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("Game rules.fxml").openStream());
-            Scene scene = new Scene(root, 360, 100);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void Exit(ActionEvent actionEvent) {
         MyViewController.player.stop();
@@ -435,4 +422,16 @@ public class MyViewController implements Observer, IView {
         stage.close();
     }
 
+    public void PlayMusic(ActionEvent actionEvent) {
+        player.play();
+        btn_Play.setDisable(true);
+        btn_Pause.setDisable(false);
+    }
+
+    public void Pause(ActionEvent actionEvent) {
+
+        player.pause();
+        btn_Play.setDisable(false);
+        btn_Pause.setDisable(true);
+    }
 }
